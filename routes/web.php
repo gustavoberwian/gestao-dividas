@@ -7,6 +7,13 @@ use App\Http\Controllers\pages\Page2;
 use App\Http\Controllers\pages\MiscError;
 use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\RegisterBasic;
+use App\Http\Controllers\CartaoCreditoController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DividaController;
+use App\Http\Controllers\FaturaController;
+use App\Http\Controllers\HistoricoJurosController;
+use App\Http\Controllers\ParcelaController;
+use App\Http\Controllers\PerfilController;
 
 // Main Page Route
 Route::get('/', [HomePage::class, 'index'])->name('pages-home');
@@ -25,7 +32,18 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::put('/perfil/renda', [PerfilController::class, 'atualizarRenda'])->name('perfil.renda.atualizar');
+
+    Route::post('/cartoes', [CartaoCreditoController::class, 'store'])->name('cartoes.store');
+
+    Route::post('/dividas', [DividaController::class, 'store'])->name('dividas.store');
+    Route::get('/dividas/{divida}/relatorio', [DividaController::class, 'relatorioAmortizacao'])->name('dividas.relatorio');
+    Route::post('/dividas/{divida}/juros', [HistoricoJurosController::class, 'store'])->name('dividas.juros.store');
+
+    Route::patch('/parcelas/{parcela}/pagar', [ParcelaController::class, 'marcarPaga'])->name('parcelas.pagar');
+
+    Route::post('/faturas', [FaturaController::class, 'store'])->name('faturas.store');
+    Route::patch('/faturas/{fatura}/pagar', [FaturaController::class, 'marcarPaga'])->name('faturas.pagar');
 });
