@@ -7,6 +7,24 @@
       "slug": "pages-home"
     },
     {
+      "url": "/dashboard",
+      "name": "Dashboard",
+      "icon": "menu-icon icon-base ti tabler-layout-dashboard",
+      "slug": "dashboard"
+    },
+    {
+      "url": "/dividas",
+      "name": "Minhas Dividas",
+      "icon": "menu-icon icon-base ti tabler-report-money",
+      "slug": "dividas.index"
+    },
+    {
+      "url": "/cartoes",
+      "name": "Cartoes de Credito",
+      "icon": "menu-icon icon-base ti tabler-credit-card",
+      "slug": "cartoes.index"
+    },
+    {
       "url": "/page-2",
       "icon": "menu-icon icon-base ti tabler-file",
       "name": "Page 2",

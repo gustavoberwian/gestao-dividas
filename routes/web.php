@@ -36,11 +36,15 @@ Route::middleware([
 
     Route::put('/perfil/renda', [PerfilController::class, 'atualizarRenda'])->name('perfil.renda.atualizar');
 
+    Route::get('/cartoes', [CartaoCreditoController::class, 'index'])->name('cartoes.index');
+    Route::get('/cartoes/{cartao}', [CartaoCreditoController::class, 'show'])->name('cartoes.show');
     Route::post('/cartoes', [CartaoCreditoController::class, 'store'])->name('cartoes.store');
 
+    Route::get('/dividas', [DividaController::class, 'index'])->name('dividas.index');
     Route::post('/dividas', [DividaController::class, 'store'])->name('dividas.store');
     Route::get('/dividas/{divida}/relatorio', [DividaController::class, 'relatorioAmortizacao'])->name('dividas.relatorio');
     Route::post('/dividas/{divida}/juros', [HistoricoJurosController::class, 'store'])->name('dividas.juros.store');
+    Route::post('/dividas/{divida}/parcelas', [ParcelaController::class, 'store'])->name('dividas.parcelas.store');
 
     Route::patch('/parcelas/{parcela}/pagar', [ParcelaController::class, 'marcarPaga'])->name('parcelas.pagar');
 

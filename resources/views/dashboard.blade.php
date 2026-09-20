@@ -1,23 +1,47 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+@extends('layouts/layoutMaster')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            {{-- Placeholder simples ate a tela final ser desenhada com o layout do Vuexy (RF008, secao 6.8) --}}
-            <ul>
-                <li>Renda mensal: {{ number_format($rendaMensal, 2, ',', '.') }}</li>
-                <li>Total em faturas abertas: {{ number_format($totalFaturasAbertas, 2, ',', '.') }}</li>
-                <li>Total em parcelas de dividas do mes: {{ number_format($totalParcelasDividasDoMes, 2, ',', '.') }}</li>
-                <li>Saldo disponivel: {{ number_format($saldoDisponivel, 2, ',', '.') }}</li>
-            </ul>
+@section('title', 'Dashboard')
 
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <x-welcome />
-            </div>
+@section('content')
+  @include('partials.alert-status')
+
+  <h4 class="mb-4">Dashboard</h4>
+
+  {{-- Cartoes com os numeros do RF008. Graficos (ApexCharts/ChartJS) ficam para a proxima etapa --}}
+  <div class="row">
+    <div class="col-md-3 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <p class="text-body-secondary mb-1">Renda mensal</p>
+          <h5 class="mb-0">R$ {{ number_format($rendaMensal, 2, ',', '.') }}</h5>
         </div>
+      </div>
     </div>
-</x-app-layout>
+    <div class="col-md-3 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <p class="text-body-secondary mb-1">Faturas em aberto</p>
+          <h5 class="mb-0">R$ {{ number_format($totalFaturasAbertas, 2, ',', '.') }}</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <p class="text-body-secondary mb-1">Parcelas de dividas do mes</p>
+          <h5 class="mb-0">R$ {{ number_format($totalParcelasDividasDoMes, 2, ',', '.') }}</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card h-100 border-primary">
+        <div class="card-body">
+          <p class="text-body-secondary mb-1">Saldo disponivel</p>
+          <h5 class="mb-0 {{ $saldoDisponivel < 0 ? 'text-danger' : 'text-success' }}">
+            R$ {{ number_format($saldoDisponivel, 2, ',', '.') }}
+          </h5>
+        </div>
+      </div>
+    </div>
+  </div>
+@endsection

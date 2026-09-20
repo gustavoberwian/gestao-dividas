@@ -9,6 +9,13 @@ use Illuminate\Http\Request;
 
 class DividaController extends Controller
 {
+    public function index(Request $request): View
+    {
+        $dividas = $request->user()->dividas()->latest('data_inicio')->get();
+
+        return view('content.dividas.index', compact('dividas'));
+    }
+
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
@@ -32,7 +39,8 @@ class DividaController extends Controller
         $this->authorize('view', $divida);
 
         $historico = $divida->historicoJuros()->orderBy('mes_referencia')->get();
+        $parcelas = $divida->parcelas()->orderBy('data_vencimento')->get();
 
-        return view('dividas.relatorio', compact('divida', 'historico'));
+        return view('content.dividas.relatorio', compact('divida', 'historico', 'parcelas'));
     }
 }
