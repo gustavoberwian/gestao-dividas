@@ -79,4 +79,51 @@ class DashboardControllerTest extends TestCase
 
         $response->assertOk();
     }
+
+    public function test_evolucao_do_saldo_devedor_soma_todas_as_dividas_do_usuario_por_mes(): void
+    {
+        $user = User::factory()->create();
+
+        $divida1 = $user->dividas()->create([
+            'descricao' => 'Divida 1', 'valor_principal' => 1000, 'credor' => 'Banco X',
+            'data_inicio' => '2026-01-01', 'saldo_devedor_atual' => 1000,
+        ]);
+        $divida2 = $user->dividas()->create([
+            'descricao' => 'Divida 2', 'valor_principal' => 500, 'credor' => 'Banco Y',
+            'data_inicio' => '2026-01-01', 'saldo_devedor_atual' => 500,
+        ]);
+
+        $divida1->historicoJuros()->create(['mes_referencia' => '2026-01-01', 'taxa_juros' => 0, 'saldo_devedor_calculado' => 1000]);
+        $divida2->historicoJuros()->create(['mes_referencia' => '2026-01-01', 'taxa_juros' => 0, 'saldo_devedor_calculado' => 500]);
+        $divida1->historicoJuros()->create(['mes_referencia' => '2026-02-01', 'taxa_juros' => 0, 'saldo_devedor_calculado' => 800]);
+
+        $response = $this->actingAs($user)->get('/dashboard');
+
+        $response->assertOk();
+        $response->assertViewHas('evolucaoSaldoDevedorLabels', function ($labels) {
+            return $labels->values()->all() === ['01/2026', '02/2026'];
+        });
+        $response->assertViewHas('evolucaoSaldoDevedorValores', function ($valores) {
+            return $valores->values()->all() === [1500.0, 800.0];
+        });
+    }
+
+    public function test_evolucao_do_saldo_devedor_nao_mistura_dados_de_outro_usuario(): void
+    {
+        $user = User::factory()->create();
+        $outroUsuario = User::factory()->create();
+
+        $divida = $outroUsuario->dividas()->create([
+            'descricao' => 'Divida de outro usuario', 'valor_principal' => 9999, 'credor' => 'Banco Z',
+            'data_inicio' => '2026-01-01', 'saldo_devedor_atual' => 9999,
+        ]);
+        $divida->historicoJuros()->create(['mes_referencia' => '2026-01-01', 'taxa_juros' => 0, 'saldo_devedor_calculado' => 9999]);
+
+        $response = $this->actingAs($user)->get('/dashboard');
+
+        $response->assertOk();
+        $response->assertViewHas('evolucaoSaldoDevedorValores', function ($valores) {
+            return $valores->isEmpty();
+        });
+    }
 }

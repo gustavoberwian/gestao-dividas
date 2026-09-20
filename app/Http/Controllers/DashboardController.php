@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Fatura;
+use App\Models\HistoricoJuros;
 use App\Models\Parcela;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -32,11 +33,27 @@ class DashboardController extends Controller
         $rendaMensal = (float) ($user->renda_mensal ?? 0);
         $saldoDisponivel = $rendaMensal - (float) $totalFaturasAbertas - (float) $totalParcelasDividasDoMes;
 
+        // Evolucao do saldo devedor total (soma de todas as dividas do usuario por mes),
+        // reaproveitando o historico que o AmortizacaoService ja persiste (RF007/RF009).
+        $evolucaoSaldoDevedor = HistoricoJuros::whereHas('divida', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+            ->selectRaw('mes_referencia, SUM(saldo_devedor_calculado) as total')
+            ->groupBy('mes_referencia')
+            ->orderBy('mes_referencia')
+            ->get();
+
         return view('dashboard', [
             'rendaMensal' => $rendaMensal,
             'totalFaturasAbertas' => (float) $totalFaturasAbertas,
             'totalParcelasDividasDoMes' => (float) $totalParcelasDividasDoMes,
             'saldoDisponivel' => $saldoDisponivel,
+            'evolucaoSaldoDevedorLabels' => $evolucaoSaldoDevedor->map(
+                fn ($registro) => $registro->mes_referencia->format('m/Y')
+            ),
+            'evolucaoSaldoDevedorValores' => $evolucaoSaldoDevedor->map(
+                fn ($registro) => round((float) $registro->total, 2)
+            ),
         ]);
     }
 }
