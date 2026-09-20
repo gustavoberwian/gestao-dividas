@@ -120,48 +120,6 @@ use Illuminate\Support\Facades\Route;
             </span>
           </a>
         </li>
-        @if (Auth::User() && Laravel\Jetstream\Jetstream::hasTeamFeatures())
-        <li>
-          <div class="dropdown-divider my-1 mx-n2"></div>
-        </li>
-        <li>
-          <h6 class="dropdown-header">Manage Team</h6>
-        </li>
-        <li>
-          <div class="dropdown-divider my-1"></div>
-        </li>
-        <li>
-          <a class="dropdown-item"
-            href="{{ Auth::user() ? route('teams.show', Auth::user()->currentTeam->id) : 'javascript:void(0)' }}">
-            <i class="icon-base bx bx-cog icon-md me-3"></i><span>Team Settings</span>
-          </a>
-        </li>
-        @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
-        <li>
-          <a class="dropdown-item" href="{{ route('teams.create') }}">
-            <i class="icon-base bx bx-user icon-md me-3"></i><span>Create New Team</span>
-          </a>
-        </li>
-        @endcan
-        @if (Auth::user()->allTeams()->count() > 1)
-        <li>
-          <div class="dropdown-divider my-1"></div>
-        </li>
-        <li>
-          <h6 class="dropdown-header">Switch Teams</h6>
-        </li>
-        <li>
-          <div class="dropdown-divider my-1"></div>
-        </li>
-        @endif
-        @if (Auth::user())
-        @foreach (Auth::user()->allTeams() as $team)
-        {{-- Below commented code read by artisan command while installing jetstream. !! Do not remove if you want to use jetstream. --}}
-
-        {{-- <x-switchable-team :team="$team" /> --}}
-        @endforeach
-        @endif
-        @endif
         <li>
           <div class="dropdown-divider my-1 mx-n2"></div>
         </li>

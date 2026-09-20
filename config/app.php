@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Facade;
+
 return [
 
     /*
@@ -123,9 +125,8 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-    'aliases' => [
-        // Other aliases...
+    'aliases' => Facade::defaultAliases()->merge([
         'Helper' => App\Helpers\Helpers::class,
-    ],
+    ])->toArray(),
 
 ];

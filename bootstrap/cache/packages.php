@@ -1,9 +1,30 @@
 <?php return array (
+  'laravel/fortify' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Laravel\\Fortify\\FortifyServiceProvider',
+    ),
+  ),
+  'laravel/jetstream' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Laravel\\Jetstream\\JetstreamServiceProvider',
+    ),
+  ),
   'laravel/pail' => 
   array (
     'providers' => 
     array (
       0 => 'Laravel\\Pail\\PailServiceProvider',
+    ),
+  ),
+  'laravel/passkeys' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Laravel\\Passkeys\\PasskeysServiceProvider',
     ),
   ),
   'laravel/sail' => 
@@ -13,11 +34,29 @@
       0 => 'Laravel\\Sail\\SailServiceProvider',
     ),
   ),
+  'laravel/sanctum' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Laravel\\Sanctum\\SanctumServiceProvider',
+    ),
+  ),
   'laravel/tinker' => 
   array (
     'providers' => 
     array (
       0 => 'Laravel\\Tinker\\TinkerServiceProvider',
+    ),
+  ),
+  'livewire/livewire' => 
+  array (
+    'aliases' => 
+    array (
+      'Livewire' => 'Livewire\\Livewire',
+    ),
+    'providers' => 
+    array (
+      0 => 'Livewire\\LivewireServiceProvider',
     ),
   ),
   'nesbot/carbon' => 
