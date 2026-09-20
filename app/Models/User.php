@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -31,6 +32,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'renda_mensal',
     ];
 
     /**
@@ -64,6 +66,17 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'renda_mensal' => 'decimal:2',
         ];
+    }
+
+    public function dividas(): HasMany
+    {
+        return $this->hasMany(Divida::class);
+    }
+
+    public function cartoesCredito(): HasMany
+    {
+        return $this->hasMany(CartaoCredito::class);
     }
 }
