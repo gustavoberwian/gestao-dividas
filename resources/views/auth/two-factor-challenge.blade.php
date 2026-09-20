@@ -1,58 +1,56 @@
-<x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+@php
+  $pageConfigs = ['myLayout' => 'blank'];
+@endphp
 
-        <div x-data="{ recovery: false }">
-            <div class="mb-4 text-sm text-gray-600" x-show="! recovery">
-                {{ __('Please confirm access to your account by entering the authentication code provided by your authenticator application.') }}
-            </div>
+@extends('layouts/layoutMaster')
 
-            <div class="mb-4 text-sm text-gray-600" x-cloak x-show="recovery">
-                {{ __('Please confirm access to your account by entering one of your emergency recovery codes.') }}
-            </div>
+@section('title', 'Verificacao em duas etapas')
 
-            <x-validation-errors class="mb-4" />
+@section('page-style')
+  @vite(['resources/assets/vendor/scss/pages/page-auth.scss'])
+@endsection
 
-            <form method="POST" action="{{ route('two-factor.login') }}">
-                @csrf
+@section('content')
+  <x-auth-card title="Verificacao em duas etapas 🛡️">
+    @include('partials.alert-status')
 
-                <div class="mt-4" x-show="! recovery">
-                    <x-label for="code" value="{{ __('Code') }}" />
-                    <x-input id="code" class="block mt-1 w-full" type="text" inputmode="numeric" name="code" autofocus x-ref="code" autocomplete="one-time-code" />
-                </div>
+    <p id="twoFactorCodeHint" class="mb-6">
+      Confirme o acesso a sua conta digitando o codigo gerado pelo seu aplicativo autenticador.
+    </p>
+    <p id="twoFactorRecoveryHint" class="mb-6 d-none">
+      Confirme o acesso a sua conta digitando um dos seus codigos de recuperacao.
+    </p>
 
-                <div class="mt-4" x-cloak x-show="recovery">
-                    <x-label for="recovery_code" value="{{ __('Recovery Code') }}" />
-                    <x-input id="recovery_code" class="block mt-1 w-full" type="text" name="recovery_code" x-ref="recovery_code" autocomplete="one-time-code" />
-                </div>
+    <form method="POST" action="{{ route('two-factor.login') }}">
+      @csrf
 
-                <div class="flex items-center justify-end mt-4">
-                    <button type="button" class="text-sm text-gray-600 hover:text-gray-900 underline cursor-pointer"
-                                    x-show="! recovery"
-                                    x-on:click="
-                                        recovery = true;
-                                        $nextTick(() => { $refs.recovery_code.focus() })
-                                    ">
-                        {{ __('Use a recovery code') }}
-                    </button>
+      <div id="twoFactorCodeField">
+        <x-auth-input type="text" name="code" label="Codigo" autofocus />
+      </div>
+      <div id="twoFactorRecoveryField" class="d-none">
+        <x-auth-input type="text" name="recovery_code" label="Codigo de recuperacao" />
+      </div>
 
-                    <button type="button" class="text-sm text-gray-600 hover:text-gray-900 underline cursor-pointer"
-                                    x-cloak
-                                    x-show="recovery"
-                                    x-on:click="
-                                        recovery = false;
-                                        $nextTick(() => { $refs.code.focus() })
-                                    ">
-                        {{ __('Use an authentication code') }}
-                    </button>
+      <div class="d-flex justify-content-between align-items-center">
+        <button type="button" id="twoFactorToggle" class="btn btn-text-secondary">
+          Usar um codigo de recuperacao
+        </button>
+        <button class="btn btn-primary" type="submit">Entrar</button>
+      </div>
+    </form>
+  </x-auth-card>
+@endsection
 
-                    <x-button class="ms-4">
-                        {{ __('Log in') }}
-                    </x-button>
-                </div>
-            </form>
-        </div>
-    </x-authentication-card>
-</x-guest-layout>
+@section('page-script')
+  <script>
+    document.getElementById('twoFactorToggle').addEventListener('click', function () {
+      const usandoRecovery = !document.getElementById('twoFactorRecoveryField').classList.contains('d-none');
+
+      document.getElementById('twoFactorCodeField').classList.toggle('d-none', !usandoRecovery);
+      document.getElementById('twoFactorCodeHint').classList.toggle('d-none', !usandoRecovery);
+      document.getElementById('twoFactorRecoveryField').classList.toggle('d-none', usandoRecovery);
+      document.getElementById('twoFactorRecoveryHint').classList.toggle('d-none', usandoRecovery);
+      this.textContent = usandoRecovery ? 'Usar um codigo de recuperacao' : 'Usar um codigo de autenticacao';
+    });
+  </script>
+@endsection

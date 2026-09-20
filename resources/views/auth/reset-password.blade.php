@@ -1,36 +1,31 @@
-<x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+@php
+  $pageConfigs = ['myLayout' => 'blank'];
+@endphp
 
-        <x-validation-errors class="mb-4" />
+@extends('layouts/layoutMaster')
 
-        <form method="POST" action="{{ route('password.update') }}">
-            @csrf
+@section('title', 'Redefinir senha')
 
-            <input type="hidden" name="token" value="{{ $request->route('token') }}">
+@section('page-style')
+  @vite(['resources/assets/vendor/scss/pages/page-auth.scss'])
+@endsection
 
-            <div class="block">
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-            </div>
+@section('content')
+  <x-auth-card title="Nova senha 🔑" subtitle="Escolha uma nova senha para sua conta">
+    @include('partials.alert-status')
 
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            </div>
+    <form method="POST" action="{{ route('password.update') }}">
+      @csrf
 
-            <div class="mt-4">
-                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
-            </div>
+      <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-            <div class="flex items-center justify-end mt-4">
-                <x-button>
-                    {{ __('Reset Password') }}
-                </x-button>
-            </div>
-        </form>
-    </x-authentication-card>
-</x-guest-layout>
+      <x-auth-input type="email" name="email" label="E-mail" :value="old('email', $request->email)" required autofocus />
+      <x-auth-password-input name="password" label="Nova senha" />
+      <x-auth-password-input name="password_confirmation" label="Confirme a nova senha" />
+
+      <div class="mb-6">
+        <button class="btn btn-primary d-grid w-100" type="submit">Redefinir senha</button>
+      </div>
+    </form>
+  </x-auth-card>
+@endsection

@@ -1,34 +1,36 @@
-<x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+@php
+  $pageConfigs = ['myLayout' => 'blank'];
+@endphp
 
-        <div class="mb-4 text-sm text-gray-600">
-            {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
-        </div>
+@extends('layouts/layoutMaster')
 
-        @session('status')
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ $value }}
-            </div>
-        @endsession
+@section('title', 'Esqueci minha senha')
 
-        <x-validation-errors class="mb-4" />
+@section('page-style')
+  @vite(['resources/assets/vendor/scss/pages/page-auth.scss'])
+@endsection
 
-        <form method="POST" action="{{ route('password.email') }}">
-            @csrf
+@section('content')
+  <x-auth-card
+    title="Esqueceu a senha? 🔒"
+    subtitle="Informe seu e-mail e enviaremos um link para voce cadastrar uma nova senha"
+  >
+    @include('partials.alert-status')
 
-            <div class="block">
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            </div>
+    <form method="POST" action="{{ route('password.email') }}">
+      @csrf
 
-            <div class="flex items-center justify-end mt-4">
-                <x-button>
-                    {{ __('Email Password Reset Link') }}
-                </x-button>
-            </div>
-        </form>
-    </x-authentication-card>
-</x-guest-layout>
+      <x-auth-input type="email" name="email" label="E-mail" :value="old('email')" required autofocus />
+
+      <div class="mb-6">
+        <button class="btn btn-primary d-grid w-100" type="submit">Enviar link de redefinicao</button>
+      </div>
+    </form>
+
+    <p class="text-center">
+      <a href="{{ route('login') }}">
+        <span>Voltar para o login</span>
+      </a>
+    </p>
+  </x-auth-card>
+@endsection

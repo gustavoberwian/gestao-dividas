@@ -1,60 +1,52 @@
-<x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+@php
+  $pageConfigs = ['myLayout' => 'blank'];
+@endphp
 
-        <x-validation-errors class="mb-4" />
+@extends('layouts/layoutMaster')
 
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
+@section('title', 'Criar conta')
 
-            <div>
-                <x-label for="name" value="{{ __('Name') }}" />
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            </div>
+@section('page-style')
+  @vite(['resources/assets/vendor/scss/pages/page-auth.scss'])
+@endsection
 
-            <div class="mt-4">
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            </div>
+@section('content')
+  <x-auth-card title="Comece agora 🚀" subtitle="Crie sua conta para organizar suas dividas e cartoes">
+    @include('partials.alert-status')
 
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            </div>
+    <form method="POST" action="{{ route('register') }}">
+      @csrf
 
-            <div class="mt-4">
-                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
-            </div>
+      <x-auth-input type="text" name="name" label="Nome" :value="old('name')" required autofocus />
+      <x-auth-input type="email" name="email" label="E-mail" :value="old('email')" required />
+      <x-auth-password-input name="password" label="Senha" />
+      <x-auth-password-input name="password_confirmation" label="Confirme a senha" />
 
-            @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
-                <div class="mt-4">
-                    <x-label for="terms">
-                        <div class="flex items-center">
-                            <x-checkbox name="terms" id="terms" required />
+      @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
+        <div class="mb-6 form-check">
+          <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
+          <label class="form-check-label" for="terms">
+            {!! __('Eu concordo com os :terms_of_service e a :privacy_policy', [
+                'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'">Termos de Servico</a>',
+                'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'">Politica de Privacidade</a>',
+            ]) !!}
+          </label>
+          @error('terms')
+            <span class="invalid-feedback d-block">{{ $message }}</span>
+          @enderror
+        </div>
+      @endif
 
-                            <div class="ms-2">
-                                {!! __('I agree to the :terms_of_service and :privacy_policy', [
-                                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Terms of Service').'</a>',
-                                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Privacy Policy').'</a>',
-                                ]) !!}
-                            </div>
-                        </div>
-                    </x-label>
-                </div>
-            @endif
+      <div class="mb-6">
+        <button class="btn btn-primary d-grid w-100" type="submit">Criar conta</button>
+      </div>
+    </form>
 
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
-
-                <x-button class="ms-4">
-                    {{ __('Register') }}
-                </x-button>
-            </div>
-        </form>
-    </x-authentication-card>
-</x-guest-layout>
+    <p class="text-center">
+      <span>Ja tem uma conta?</span>
+      <a href="{{ route('login') }}">
+        <span>Entrar</span>
+      </a>
+    </p>
+  </x-auth-card>
+@endsection
