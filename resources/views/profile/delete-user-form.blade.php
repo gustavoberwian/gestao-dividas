@@ -1,53 +1,52 @@
-<x-action-section>
-    <x-slot name="title">
-        {{ __('Delete Account') }}
-    </x-slot>
+<div class="card border-danger">
+  <div class="card-header">
+    <h5 class="mb-1">Excluir Conta</h5>
+    <p class="text-body-secondary mb-0">Exclua permanentemente sua conta.</p>
+  </div>
+  <div class="card-body">
+    <p class="text-body-secondary">
+      Depois que sua conta for excluida, todos os seus recursos e dados serao removidos
+      permanentemente. Antes de excluir sua conta, baixe qualquer dado ou informacao que deseje manter.
+    </p>
 
-    <x-slot name="description">
-        {{ __('Permanently delete your account.') }}
-    </x-slot>
+    <button type="button" class="btn btn-danger" wire:click="confirmUserDeletion" wire:loading.attr="disabled">
+      Excluir Conta
+    </button>
 
-    <x-slot name="content">
-        <div class="max-w-xl text-sm text-gray-600">
-            {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
+    <x-dialog-modal wire:model.live="confirmingUserDeletion">
+      <x-slot name="title">
+        Excluir Conta
+      </x-slot>
+
+      <x-slot name="content">
+        Tem certeza que deseja excluir sua conta? Depois que sua conta for excluida, todos os seus
+        recursos e dados serao removidos permanentemente. Digite sua senha para confirmar.
+
+        <div class="mt-4" x-data="{}" x-on:confirming-delete-user.window="setTimeout(() => $refs.password.focus(), 250)">
+          <input
+            type="password"
+            class="form-control @error('password') is-invalid @enderror"
+            autocomplete="current-password"
+            placeholder="Senha"
+            x-ref="password"
+            wire:model="password"
+            wire:keydown.enter="deleteUser"
+          >
+          @error('password')
+            <span class="invalid-feedback d-block">{{ $message }}</span>
+          @enderror
         </div>
+      </x-slot>
 
-        <div class="mt-5">
-            <x-danger-button wire:click="confirmUserDeletion" wire:loading.attr="disabled">
-                {{ __('Delete Account') }}
-            </x-danger-button>
-        </div>
+      <x-slot name="footer">
+        <button type="button" class="btn btn-outline-secondary" wire:click="$toggle('confirmingUserDeletion')" wire:loading.attr="disabled">
+          Cancelar
+        </button>
 
-        <!-- Delete User Confirmation Modal -->
-        <x-dialog-modal wire:model.live="confirmingUserDeletion">
-            <x-slot name="title">
-                {{ __('Delete Account') }}
-            </x-slot>
-
-            <x-slot name="content">
-                {{ __('Are you sure you want to delete your account? Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
-
-                <div class="mt-4" x-data="{}" x-on:confirming-delete-user.window="setTimeout(() => $refs.password.focus(), 250)">
-                    <x-input type="password" class="mt-1 block w-3/4"
-                                autocomplete="current-password"
-                                placeholder="{{ __('Password') }}"
-                                x-ref="password"
-                                wire:model="password"
-                                wire:keydown.enter="deleteUser" />
-
-                    <x-input-error for="password" class="mt-2" />
-                </div>
-            </x-slot>
-
-            <x-slot name="footer">
-                <x-secondary-button wire:click="$toggle('confirmingUserDeletion')" wire:loading.attr="disabled">
-                    {{ __('Cancel') }}
-                </x-secondary-button>
-
-                <x-danger-button class="ms-3" wire:click="deleteUser" wire:loading.attr="disabled">
-                    {{ __('Delete Account') }}
-                </x-danger-button>
-            </x-slot>
-        </x-dialog-modal>
-    </x-slot>
-</x-action-section>
+        <button type="button" class="btn btn-danger ms-2" wire:click="deleteUser" wire:loading.attr="disabled">
+          Excluir Conta
+        </button>
+      </x-slot>
+    </x-dialog-modal>
+  </div>
+</div>
