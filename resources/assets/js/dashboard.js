@@ -48,23 +48,32 @@
   const composicaoOrcamentoEl = document.querySelector('#composicaoOrcamentoChart');
 
   if (composicaoOrcamentoEl) {
-    new ApexCharts(composicaoOrcamentoEl, {
-      chart: {
-        type: 'donut',
-        height: 300,
-      },
-      series: [
-        data.totalFaturasAbertas,
-        data.totalParcelasDividasDoMes,
-        Math.max(data.saldoDisponivel, 0),
-      ],
-      labels: ['Faturas em aberto', 'Parcelas de dividas do mes', 'Saldo disponivel'],
-      legend: { position: 'bottom' },
-      tooltip: {
-        y: {
-          formatter: (valor) => 'R$ ' + valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 }),
+    const composicaoValores = [
+      data.totalFaturasAbertas,
+      data.totalParcelasDividasDoMes,
+      Math.max(data.saldoDisponivel, 0),
+    ];
+
+    // ApexCharts nao desenha um donut quando todas as fatias sao 0 (usuario novo,
+    // sem renda/faturas/parcelas cadastradas ainda) - mostra so o traco central.
+    if (composicaoValores.every((valor) => valor === 0)) {
+      composicaoOrcamentoEl.innerHTML =
+        '<p class="text-body-secondary text-center mb-0 py-5">Cadastre sua renda mensal e seus cartoes/dividas para ver a composicao do orcamento aqui.</p>';
+    } else {
+      new ApexCharts(composicaoOrcamentoEl, {
+        chart: {
+          type: 'donut',
+          height: 300,
         },
-      },
-    }).render();
+        series: composicaoValores,
+        labels: ['Faturas em aberto', 'Parcelas de dividas do mes', 'Saldo disponivel'],
+        legend: { position: 'bottom' },
+        tooltip: {
+          y: {
+            formatter: (valor) => 'R$ ' + valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 }),
+          },
+        },
+      }).render();
+    }
   }
 })();

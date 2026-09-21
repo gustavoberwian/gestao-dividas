@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\language\LanguageController;
-use App\Http\Controllers\pages\HomePage;
 use App\Http\Controllers\pages\Page2;
 use App\Http\Controllers\pages\MiscError;
 use App\Http\Controllers\authentications\LoginBasic;
@@ -15,15 +14,20 @@ use App\Http\Controllers\HistoricoJurosController;
 use App\Http\Controllers\ParcelaController;
 use App\Http\Controllers\PerfilController;
 
-// Main Page Route
-Route::get('/', [HomePage::class, 'index'])->name('pages-home');
+// Raiz do sistema: manda para o dashboard (autenticado) ou para o login (visitante).
+// A HomePage/Page2/telas de auth "basic" abaixo sao demos do starter-kit do Vuexy,
+// mantidas registradas como referencia mas fora do menu do produto final.
+Route::get('/', function () {
+    return redirect(auth()->check() ? '/dashboard' : '/login');
+})->name('pages-home');
+
 Route::get('/page-2', [Page2::class, 'index'])->name('pages-page-2');
 
 // locale
 Route::get('/lang/{locale}', [LanguageController::class, 'swap']);
 Route::get('/pages/misc-error', [MiscError::class, 'index'])->name('pages-misc-error');
 
-// authentication
+// authentication (demos estaticas do starter-kit, nao usar - login/registro reais ficam em /login e /register)
 Route::get('/auth/login-basic', [LoginBasic::class, 'index'])->name('auth-login-basic');
 Route::get('/auth/register-basic', [RegisterBasic::class, 'index'])->name('auth-register-basic');
 
