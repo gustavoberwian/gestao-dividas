@@ -45,6 +45,42 @@ class AmortizacaoService
         });
     }
 
+    /**
+     * Recalculo em cascata (Bloco G): reaplica calcularSaldoDevedor, em ordem, a cada mes
+     * a partir de $mesInicial (ou desde o primeiro, se nulo) que tenha taxa registrada ou
+     * parcela paga. Meses sem nenhum dos dois continuam sem juros (limitacao conhecida).
+     * Ao fim, o cache da divida fica com o saldo do ultimo mes registrado, ou com o valor
+     * principal se nao restar nenhum registro.
+     */
+    public function recalcularAPartirDe(Divida $divida, string|CarbonInterface|null $mesInicial = null): void
+    {
+        $inicio = $mesInicial ? Carbon::parse($mesInicial)->startOfMonth() : null;
+
+        DB::transaction(function () use ($divida, $inicio) {
+            $mesesComTaxa = HistoricoJuros::where('divida_id', $divida->id)
+                ->when($inicio, fn ($query) => $query->where('mes_referencia', '>=', $inicio->toDateString()))
+                ->pluck('mes_referencia')
+                ->map(fn ($mes) => Carbon::parse($mes)->format('Y-m'));
+
+            $mesesComPagamento = Parcela::where('divida_id', $divida->id)
+                ->where('status_pagamento', 'paga')
+                ->when($inicio, fn ($query) => $query->where('data_vencimento', '>=', $inicio->toDateString()))
+                ->pluck('data_vencimento')
+                ->map(fn ($data) => Carbon::parse($data)->format('Y-m'));
+
+            $meses = $mesesComTaxa->concat($mesesComPagamento)->unique()->sort()->values();
+
+            foreach ($meses as $mes) {
+                $this->calcularSaldoDevedor($divida, $mes.'-01');
+            }
+
+            $ultimo = HistoricoJuros::where('divida_id', $divida->id)->orderByDesc('mes_referencia')->first();
+            $divida->update([
+                'saldo_devedor_atual' => $ultimo ? $ultimo->saldo_devedor_calculado : $divida->valor_principal,
+            ]);
+        });
+    }
+
     private function saldoDevedorAnterior(Divida $divida, CarbonInterface $mesReferencia): float
     {
         $historicoAnterior = HistoricoJuros::where('divida_id', $divida->id)

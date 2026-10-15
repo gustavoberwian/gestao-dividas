@@ -11,8 +11,7 @@
 @endsection
 
 @section('content')
-  <x-auth-card title="Comece agora 🚀" subtitle="Crie sua conta para organizar suas dividas e cartoes">
-    @include('partials.alert-status')
+  <x-auth-card title="Comece agora 🚀" subtitle="Crie sua conta para organizar suas dívidas e cartões">
 
     <form method="POST" action="{{ route('register') }}">
       @csrf
@@ -27,8 +26,8 @@
           <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
           <label class="form-check-label" for="terms">
             {!! __('Eu concordo com os :terms_of_service e a :privacy_policy', [
-                'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'">Termos de Servico</a>',
-                'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'">Politica de Privacidade</a>',
+                'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'">Termos de Serviço</a>',
+                'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'">Política de Privacidade</a>',
             ]) !!}
           </label>
           @error('terms')
@@ -43,7 +42,7 @@
     </form>
 
     <p class="text-center">
-      <span>Ja tem uma conta?</span>
+      <span>Já tem uma conta?</span>
       <a href="{{ route('login') }}">
         <span>Entrar</span>
       </a>

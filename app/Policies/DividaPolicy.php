@@ -11,4 +11,14 @@ class DividaPolicy
     {
         return $user->id === $divida->user_id;
     }
+
+    public function update(User $user, Divida $divida): bool
+    {
+        return $this->view($user, $divida);
+    }
+
+    public function delete(User $user, Divida $divida): bool
+    {
+        return $this->view($user, $divida);
+    }
 }

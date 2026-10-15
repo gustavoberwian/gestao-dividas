@@ -11,4 +11,14 @@ class CartaoCreditoPolicy
     {
         return $user->id === $cartaoCredito->user_id;
     }
+
+    public function update(User $user, CartaoCredito $cartaoCredito): bool
+    {
+        return $this->view($user, $cartaoCredito);
+    }
+
+    public function delete(User $user, CartaoCredito $cartaoCredito): bool
+    {
+        return $this->view($user, $cartaoCredito);
+    }
 }

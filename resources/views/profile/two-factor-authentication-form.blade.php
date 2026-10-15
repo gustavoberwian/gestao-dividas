@@ -1,34 +1,34 @@
 <div class="card">
   <div class="card-header">
-    <h5 class="mb-1">Autenticacao em Duas Etapas</h5>
-    <p class="text-body-secondary mb-0">Adicione uma camada extra de seguranca a sua conta.</p>
+    <h5 class="mb-1">Autenticação em Duas Etapas</h5>
+    <p class="text-body-secondary mb-0">Adicione uma camada extra de segurança à sua conta.</p>
   </div>
   <div class="card-body">
     <h6 class="mb-2">
       @if ($this->enabled)
         @if ($showingConfirmation)
-          Finalize a ativacao da autenticacao em duas etapas.
+          Finalize a ativação da autenticação em duas etapas.
         @else
-          A autenticacao em duas etapas esta ativada.
+          A autenticação em duas etapas está ativada.
         @endif
       @else
-        A autenticacao em duas etapas nao esta ativada.
+        A autenticação em duas etapas não está ativada.
       @endif
     </h6>
 
     <p class="text-body-secondary">
-      Quando a autenticacao em duas etapas estiver ativada, sera solicitado um codigo seguro durante
-      a autenticacao. Voce pode obter esse codigo no aplicativo autenticador do seu telefone.
+      Quando a autenticação em duas etapas estiver ativada, será solicitado um código seguro durante
+      a autenticação. Você pode obter esse código no aplicativo autenticador do seu telefone.
     </p>
 
     @if ($this->enabled)
       @if ($showingQrCode)
         <p class="fw-semibold">
           @if ($showingConfirmation)
-            Para finalizar a ativacao, escaneie o QR code abaixo com o aplicativo autenticador do seu
-            telefone ou informe a chave manualmente e digite o codigo gerado.
+            Para finalizar a ativação, escaneie o QR code abaixo com o aplicativo autenticador do seu
+            telefone ou informe a chave manualmente e digite o código gerado.
           @else
-            A autenticacao em duas etapas esta ativa. Escaneie o QR code abaixo com o aplicativo
+            A autenticação em duas etapas está ativa. Escaneie o QR code abaixo com o aplicativo
             autenticador do seu telefone ou informe a chave manualmente.
           @endif
         </p>
@@ -43,7 +43,7 @@
 
         @if ($showingConfirmation)
           <div class="mb-6" style="max-width: 20rem;">
-            <label for="code" class="form-label">Codigo</label>
+            <label for="code" class="form-label">Código</label>
             <input
               id="code"
               type="text"
@@ -64,8 +64,8 @@
 
       @if ($showingRecoveryCodes)
         <p class="fw-semibold">
-          Guarde estes codigos de recuperacao em um gerenciador de senhas seguro. Eles podem ser
-          usados para recuperar o acesso a sua conta caso voce perca o dispositivo autenticador.
+          Guarde estes códigos de recuperação em um gerenciador de senhas seguro. Eles podem ser
+          usados para recuperar o acesso à sua conta caso você perca o dispositivo autenticador.
         </p>
 
         <div class="bg-light rounded p-3 font-monospace" style="max-width: 20rem;">
@@ -84,7 +84,7 @@
       @else
         @if ($showingRecoveryCodes)
           <x-confirms-password wire:then="regenerateRecoveryCodes">
-            <button type="button" class="btn btn-outline-secondary me-2">Gerar novos codigos de recuperacao</button>
+            <button type="button" class="btn btn-outline-secondary me-2">Gerar novos códigos de recuperação</button>
           </x-confirms-password>
         @elseif ($showingConfirmation)
           <x-confirms-password wire:then="confirmTwoFactorAuthentication">
@@ -92,7 +92,7 @@
           </x-confirms-password>
         @else
           <x-confirms-password wire:then="showRecoveryCodes">
-            <button type="button" class="btn btn-outline-secondary me-2">Ver codigos de recuperacao</button>
+            <button type="button" class="btn btn-outline-secondary me-2">Ver códigos de recuperação</button>
           </x-confirms-password>
         @endif
 

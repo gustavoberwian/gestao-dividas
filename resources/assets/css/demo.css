@@ -103,3 +103,12 @@
   text-align: center;
   margin-top: 1rem;
 }
+
+/* Gestao de Dividas: badge amarela para fatura "fechada" (o warning do tema e laranja) */
+.bg-label-amarelo {
+  background-color: rgba(234, 179, 8, 0.16) !important;
+  color: #b88a00 !important;
+}
+[data-bs-theme='dark'] .bg-label-amarelo {
+  color: #facc15 !important;
+}

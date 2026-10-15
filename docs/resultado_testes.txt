@@ -1,0 +1,609 @@
+# php artisan test --testdox — 15/10/2026 11:49
+
+PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.3.6
+Configuration: /home/gustavoberwian_fazc/tcc/gestao-dividas/phpunit.xml
+
+
+   PASS  Tests\Unit\ExampleTest
+  ✓ that true is true
+
+   PASS  Tests\Unit\Models\SituacaoTest
+  ✓ situacao da parcela with data set "venceu ontem"                     0.15s  
+  ✓ situacao da parcela with data set "vence hoje (limite)"              0.02s  
+  ✓ situacao da parcela with data set "vence amanha"                     0.01s  
+  ✓ situacao da parcela with data set "paga e atrasada"                  0.01s  
+  ✓ parcela usa o fuso de sao paulo                                      0.01s  
+  ✓ situacao da fatura with data set "antes do fechamento"               0.01s  
+  ✓ situacao da fatura with data set "no dia do fechamento"              0.01s  
+  ✓ situacao da fatura with data set "depois do fechamento"              0.01s  
+  ✓ situacao da fatura with data set "no dia do vencimento (limite)"     0.01s  
+  ✓ situacao da fatura with data set "depois do vencimento"              0.01s  
+  ✓ fatura paga e sempre paga                                            0.01s  
+  ✓ fechamento maior que vencimento fecha no mes anterior                0.01s  
+  ✓ dia 31 em mes de 30 dias vira ultimo dia                             0.01s  
+  ✓ vencimento dia 31 em fevereiro                                       0.01s  
+
+   PASS  Tests\Unit\Services\AmortizacaoServiceTest
+  ✓ primeiro calculo usa valor principal como saldo anterior             0.54s  
+  ✓ mes seguinte usa saldo do historico anterior como base               0.03s  
+  ✓ desconta parcelas pagas no mes de referencia                         0.03s  
+  ✓ soma multiplas parcelas pagas no mesmo mes                           0.03s  
+  ✓ ignora parcelas pendentes                                            0.02s  
+  ✓ ignora parcelas pagas em outro mes                                   0.03s  
+  ✓ ignora parcelas de outra divida                                      0.03s  
+  ✓ assume taxa zero quando nao ha historico para o mes corrente         0.03s  
+  ✓ persiste resultado em historico juros                                0.03s  
+  ✓ atualiza cache de saldo devedor atual na divida                      0.03s  
+  ✓ recalculo do mesmo mes e idempotente e nao duplica historico         0.03s  
+
+   PASS  Tests\Unit\Services\CenariosC1C4Test
+  ✓ cenario with data set " c1"                                          0.05s  
+  ✓ cenario with data set " c2"                                          0.03s  
+  ✓ cenario with data set " c3"                                          0.03s  
+  ✓ cenario with data set " c4"                                          0.03s  
+  ✓ c1 parcela pendente nao entra no pagamento do mes                    0.04s  
+
+   WARN  Tests\Feature\ApiTokenPermissionsTest
+  - api token permissions can be updated → API support is not enabled.   0.02s  
+
+   PASS  Tests\Feature\AuthenticationTest
+  ✓ login screen can be rendered                                         0.03s  
+  ✓ users can authenticate using the login screen                        0.05s  
+  ✓ users can not authenticate with invalid password                     0.05s  
+
+   PASS  Tests\Feature\AvisosTest
+  ✓ mensagem de status e entregue ao toast                               0.11s  
+  ✓ erro de validacao fica inline no formulario enviado                  0.09s  
+
+   PASS  Tests\Feature\BrowserSessionsTest
+  ✓ other browser sessions can be logged out                             0.06s  
+
+   PASS  Tests\Feature\CartaoCreditoControllerTest
+  ✓ usuario autenticado pode cadastrar cartao de credito                 0.03s  
+  ✓ dia fechamento fora do intervalo valido e rejeitado                  0.02s  
+  ✓ usuario nao autenticado nao pode cadastrar cartao                    0.02s  
+
+   WARN  Tests\Feature\CreateApiTokenTest
+  - api tokens can be created → API support is not enabled.              0.02s  
+
+   PASS  Tests\Feature\DashboardControllerTest
+  ✓ saldo disponivel desconta faturas abertas e parcelas de dividas do…  0.04s  
+  ✓ usuario sem renda cadastrada nao gera erro                           0.03s  
+  ✓ evolucao do saldo devedor tem uma serie por divida                   0.04s  
+  ✓ evolucao do saldo devedor nao mistura dados de outro usuario         0.03s  
+
+   PASS  Tests\Feature\DashboardPainelTest
+  ✓ cartoes alertas e proximos vencimentos                               0.04s  
+  ✓ barra mostra excedente quando comprometido passa da renda            0.04s  
+  ✓ sem renda mostra alerta com botao e sem dividas mostra estado vazio  0.03s  
+  ✓ relatorio decompoe pagamento em juros e amortizacao                  0.04s  
+
+   PASS  Tests\Feature\DeleteAccountTest
+  ✓ user accounts can be deleted                                         0.03s  
+  ✓ correct password must be provided before account can be deleted      0.03s  
+
+   WARN  Tests\Feature\DeleteApiTokenTest
+  - api tokens can be deleted → API support is not enabled.              0.02s  
+
+   PASS  Tests\Feature\DemoSeederTest
+  ✓ demo seeder recria usuario limpo que consegue fazer login            0.04s  
+  ✓ demo seeder nao apaga outros usuarios nem seus dados                 0.03s  
+
+   PASS  Tests\Feature\DividaControllerTest
+  ✓ usuario autenticado pode cadastrar divida                            0.02s  
+  ✓ dono da divida pode ver o relatorio de amortizacao                   0.03s  
+  ✓ usuario nao pode ver relatorio de divida de outro usuario            0.04s  
+
+   PASS  Tests\Feature\EditarExcluirTest
+  ✓ dono consegue with data set "editar dívida"                          0.03s  
+  ✓ dono consegue with data set "excluir dívida"                         0.03s  
+  ✓ dono consegue with data set "editar taxa"                            0.03s  
+  ✓ dono consegue with data set "excluir taxa"                           0.03s  
+  ✓ dono consegue with data set "editar parcela"                         0.03s  
+  ✓ dono consegue with data set "excluir parcela"                        0.04s  
+  ✓ dono consegue with data set "desfazer pagamento da parcela"          0.05s  
+  ✓ dono consegue with data set "editar cartão"                          0.04s  
+  ✓ dono consegue with data set "excluir cartão"                         0.03s  
+  ✓ dono consegue with data set "editar fatura"                          0.03s  
+  ✓ dono consegue with data set "excluir fatura"                         0.03s  
+  ✓ dono consegue with data set "desfazer pagamento da fatura"           0.04s  
+  ✓ outro usuario recebe 403 e nada muda with data set "editar dívida"   0.03s  
+  ✓ outro usuario recebe 403 e nada muda with data set "excluir dívida"  0.03s  
+  ✓ outro usuario recebe 403 e nada muda with data set "editar taxa"     0.03s  
+  ✓ outro usuario recebe 403 e nada muda with data set "excluir taxa"    0.03s  
+  ✓ outro usuario recebe 403 e nada muda with data set "editar parcela"  0.03s  
+  ✓ outro usuario recebe 403 e nada muda with data set "excluir parcela… 0.03s  
+  ✓ outro usuario recebe 403 e nada muda with data set "desfazer pagame… 0.03s  
+  ✓ outro usuario recebe 403 e nada muda with data set "editar cartão"   0.03s  
+  ✓ outro usuario recebe 403 e nada muda with data set "excluir cartão"  0.03s  
+  ✓ outro usuario recebe 403 e nada muda with data set "editar fatura"   0.03s  
+  ✓ outro usuario recebe 403 e nada muda with data set "excluir fatura"  0.03s  
+  ✓ outro usuario recebe 403 e nada muda with data set "desfazer pagame… 0.03s  
+  ✓ visitante vai para o login with data set "editar dívida"             0.03s  
+  ✓ visitante vai para o login with data set "excluir dívida"            0.03s  
+  ✓ visitante vai para o login with data set "editar taxa"               0.03s  
+  ✓ visitante vai para o login with data set "excluir taxa"              0.03s  
+  ✓ visitante vai para o login with data set "editar parcela"            0.03s  
+  ✓ visitante vai para o login with data set "excluir parcela"           0.03s  
+  ✓ visitante vai para o login with data set "desfazer pagamento da par… 0.03s  
+  ✓ visitante vai para o login with data set "editar cartão"             0.02s  
+  ✓ visitante vai para o login with data set "excluir cartão"            0.02s  
+  ✓ visitante vai para o login with data set "editar fatura"             0.02s  
+  ✓ visitante vai para o login with data set "excluir fatura"            0.03s  
+  ✓ visitante vai para o login with data set "desfazer pagamento da fat… 0.02s  
+  ✓ filho de outro pai na url aninhada retorna 404 with data set "edita… 0.04s  
+  ✓ filho de outro pai na url aninhada retorna 404 with data set "exclu… 0.03s  
+  ✓ filho de outro pai na url aninhada retorna 404 with data set "edita… 0.04s  
+  ✓ filho de outro pai na url aninhada retorna 404 with data set "exclu… 0.03s  
+  ✓ filho de outro pai na url aninhada retorna 404 with data set "desfa… 0.03s  
+  ✓ filho de outro pai na url aninhada retorna 404 with data set "edita… 0.03s  
+  ✓ filho de outro pai na url aninhada retorna 404 with data set "exclu… 0.04s  
+  ✓ filho de outro pai na url aninhada retorna 404 with data set "desfa… 0.03s  
+  ✓ recurso correto de outro usuario retorna 403 with data set "editar…  0.03s  
+  ✓ recurso correto de outro usuario retorna 403 with data set "excluir… 0.03s  
+  ✓ recurso correto de outro usuario retorna 403 with data set "editar…  0.03s  
+  ✓ recurso correto de outro usuario retorna 403 with data set "excluir… 0.03s  
+  ✓ recurso correto de outro usuario retorna 403 with data set "desfaze… 0.03s  
+  ✓ recurso correto de outro usuario retorna 403 with data set "editar…  0.03s  
+  ✓ recurso correto de outro usuario retorna 403 with data set "excluir… 0.03s  
+  ✓ recurso correto de outro usuario retorna 403 with data set "desfaze… 0.03s  
+  ✓ excluir divida remove parcelas e historico                           0.03s  
+  ✓ excluir cartao remove faturas                                        0.03s  
+  ✓ telas mostram botoes de editar excluir com confirmacao               0.04s  
+
+   PASS  Tests\Feature\EmailCaseInsensitiveTest
+  ✓ email e sempre salvo em minusculas                                   0.04s  
+  ✓ usuario pode logar digitando email com case diferente do cadastro    0.02s  
+  ✓ nao e possivel cadastrar dois usuarios com mesmo email em case dife… 0.02s  
+
+   WARN  Tests\Feature\EmailVerificationTest
+  - email verification screen can be rendered → Email verification not…  0.02s  
+  - email can be verified → Email verification not enabled.              0.02s  
+  - email can not verified with invalid hash → Email verification not e… 0.02s  
+
+   PASS  Tests\Feature\ExampleTest
+  ✓ a raiz redireciona visitante para o login                            0.03s  
+  ✓ a raiz redireciona usuario autenticado para o dashboard              0.02s  
+
+   PASS  Tests\Feature\FaturaControllerTest
+  ✓ dono do cartao pode cadastrar fatura                                 0.03s  
+  ✓ usuario nao pode cadastrar fatura em cartao de outro usuario         0.03s  
+  ✓ dono pode marcar fatura como paga                                    0.02s  
+  ✓ usuario nao pode marcar fatura de outro usuario como paga            0.03s  
+
+   PASS  Tests\Feature\FluxoCompletoC1Test
+  ✓ fluxo completo do c1 pela interface                                  0.18s  
+
+   PASS  Tests\Feature\HistoricoJurosControllerTest
+  ✓ cadastrar taxa de juros dispara o recalculo do saldo devedor         0.03s  
+  ✓ taxa percentual com virgula e gravada como fracao                    0.03s  
+  ✓ taxa acima de 100 por cento e rejeitada                              0.03s  
+  ✓ usuario nao pode lancar juros em divida de outro usuario             0.04s  
+
+   PASS  Tests\Feature\IdentidadeVisualTest
+  ✓ tela de login nao exibe marca do template                            0.03s  
+  ✓ dashboard tem titulo e rodape do projeto                             0.03s  
+
+   PASS  Tests\Feature\IdiomaEEmailTest
+  ✓ aplicacao esta em portugues e no fuso de sao paulo                   0.02s  
+  ✓ mensagem de validacao em portugues                                   0.02s  
+  ✓ login invalido mostra mensagem em portugues                          0.02s  
+  ✓ pedido de redefinicao envia email ao usuario certo em portugues      0.22s  
+  ✓ remetente configurado                                                0.01s  
+
+   PASS  Tests\Feature\IntegridadeBancoTest
+  ✓ parcela com fatura e divida e recusada pelo banco                    0.03s  
+  ✓ parcela sem fatura e sem divida e recusada pelo banco                0.02s  
+  ✓ parcela com exatamente um vinculo e aceita                           0.03s  
+  ✓ constraint existe no catalogo do postgresql                          0.02s  
+
+   PASS  Tests\Feature\IsolamentoEntreUsuariosTest
+  ✓ c6 usuario b e negado nas rotas de a with data set " g e t /dividas… 0.04s  
+  ✓ c6 usuario b e negado nas rotas de a with data set " g e t /dividas… 0.04s  
+  ✓ c6 usuario b e negado nas rotas de a with data set " p o s t /divid… 0.04s  
+  ✓ c6 usuario b e negado nas rotas de a with data set " p o s t /divid… 0.04s  
+  ✓ c6 usuario b e negado nas rotas de a with data set " p a t c h /par… 0.04s  
+  ✓ c6 usuario b e negado nas rotas de a with data set " p a t c h /fat… 0.04s  
+  ✓ c6 usuario b e negado nas rotas de a with data set " g e t /cartoes… 0.03s  
+  ✓ c6 usuario b e negado nas rotas de a with data set " p o s t /fatur… 0.04s  
+  ✓ c6 visitante e redirecionado ao login with data set " g e t /divida… 0.03s  
+  ✓ c6 visitante e redirecionado ao login with data set " g e t /divida… 0.02s  
+  ✓ c6 visitante e redirecionado ao login with data set " p o s t /divi… 0.02s  
+  ✓ c6 visitante e redirecionado ao login with data set " p o s t /divi… 0.03s  
+  ✓ c6 visitante e redirecionado ao login with data set " p a t c h /pa… 0.03s  
+  ✓ c6 visitante e redirecionado ao login with data set " p a t c h /fa… 0.03s  
+  ✓ c6 visitante e redirecionado ao login with data set " g e t /cartoe… 0.03s  
+  ✓ c6 visitante e redirecionado ao login with data set " p o s t /fatu… 0.02s  
+  ✓ c6 listagens de b nao contem registros de a                          0.05s  
+  ✓ c6 dashboard de b nao inclui valores de a                            0.03s  
+
+   PASS  Tests\Feature\MascarasTest
+  ✓ normalizador aceita formatos mascarados with data set "mascara comp… 0.02s  
+  ✓ normalizador aceita formatos mascarados with data set "milhar e vir… 0.02s  
+  ✓ normalizador aceita formatos mascarados with data set "so virgula"   0.01s  
+  ✓ normalizador aceita formatos mascarados with data set "ponto decima… 0.01s  
+  ✓ cadastro de divida aceita valor mascarado with data set "mascara co… 0.02s  
+  ✓ cadastro de divida aceita valor mascarado with data set "milhar e v… 0.02s  
+  ✓ cadastro de divida aceita valor mascarado with data set "so virgula… 0.02s  
+  ✓ cadastro de divida aceita valor mascarado with data set "ponto deci… 0.02s  
+  ✓ valores mascarados em cartao fatura e parcela                        0.04s  
+  ✓ valor invalido e recusado em portugues with data set "texto"         0.02s  
+  ✓ valor invalido e recusado em portugues with data set "duas virgulas… 0.02s  
+  ✓ valor invalido e recusado em portugues with data set "tres casas"    0.02s  
+  ✓ valor invalido e recusado em portugues with data set "zero"          0.02s  
+  ✓ valor invalido e recusado em portugues with data set "vazio"         0.02s  
+  ✓ taxa mascarada e limitada a 100                                      0.03s  
+
+   PASS  Tests\Feature\ParcelaControllerTest
+  ✓ marcar parcela de divida como paga dispara recalculo do saldo deved… 0.04s  
+  ✓ marcar parcela de fatura como paga nao mexe no saldo devedor de div… 0.03s  
+  ✓ usuario nao pode marcar parcela de divida de outro usuario como pag… 0.03s  
+  ✓ usuario nao pode marcar parcela de fatura de outro usuario como pag… 0.03s  
+
+   PASS  Tests\Feature\PasswordConfirmationTest
+  ✓ confirm password screen can be rendered                              0.03s  
+  ✓ password can be confirmed                                            0.02s  
+  ✓ password is not confirmed with invalid password                      0.22s  
+
+   PASS  Tests\Feature\PasswordResetTest
+  ✓ reset password link screen can be rendered                           0.02s  
+  ✓ reset password link can be requested                                 0.22s  
+  ✓ reset password screen can be rendered                                0.23s  
+  ✓ password can be reset with valid token                               0.23s  
+
+   PASS  Tests\Feature\PerfilControllerTest
+  ✓ usuario pode atualizar a propria renda mensal                        0.02s  
+  ✓ dashboard exibe formulario de renda mensal                           0.03s  
+  ✓ salvar renda com virgula atualiza e mostra mensagem                  0.04s  
+  ✓ renda com mais de duas casas e rejeitada                             0.02s  
+  ✓ renda mensal negativa e rejeitada                                    0.02s  
+
+   PASS  Tests\Feature\ProfileInformationTest
+  ✓ current profile information is available                             0.03s  
+  ✓ profile information can be updated                                   0.03s  
+
+   PASS  Tests\Feature\RecalculoCascataTest
+  ✓ editar pagamento do mes 1 recalcula os meses seguintes               0.10s  
+  ✓ excluir taxa de mes com pagamento vira zero e recalcula              0.09s  
+  ✓ desfazer pagamento do mes 3                                          0.10s  
+  ✓ editar taxa do mes 1 recalcula os meses seguintes                    0.11s  
+  ✓ excluir parcela paga recalcula                                       0.09s  
+  ✓ excluir taxa de mes sem pagamento remove o registro                  0.10s  
+  ✓ editar valor principal recalcula todos os meses                      0.10s  
+  ✓ registro de zero por cento criado ao pagar permanece apos desfazer   0.11s  
+  ✓ mes sem taxa nao gera juros e nao e criado pela cascata              0.10s  
+  ✓ falha no recalculo desfaz a edicao                                   0.10s  
+  ✓ falha no recalculo desfaz a exclusao da taxa                         0.09s  
+
+   WARN  Tests\Feature\RegistrationTest
+  ✓ registration screen can be rendered                                  0.02s  
+  - registration screen cannot be rendered if support is disabled → Reg… 0.01s  
+  ✓ new users can register                                               0.02s  
+
+   PASS  Tests\Feature\RendaLivreRealTest
+  ✓ c5 renda livre real                                                  0.04s  
+  ✓ c5 caso de borda nao altera o resultado with data set "a"            0.05s  
+  ✓ c5 caso de borda nao altera o resultado with data set "b"            0.04s  
+  ✓ c5 caso de borda nao altera o resultado with data set "c"            0.05s  
+  ✓ c5 caso de borda nao altera o resultado with data set "d"            0.04s  
+  ✓ c5 todos os casos de borda juntos                                    0.04s  
+  ✓ parcela vencida de mes anterior gera alerta sem alterar a formula    0.07s  
+  ✓ sem parcelas vencidas nao ha alerta                                  0.04s  
+  ✓ renda livre real pode ficar negativa                                 0.04s  
+
+   PASS  Tests\Feature\TwoFactorAuthenticationSettingsTest
+  ✓ two factor authentication can be enabled                             0.06s  
+  ✓ recovery codes can be regenerated                                    0.07s  
+  ✓ two factor authentication can be disabled                            0.04s  
+
+   PASS  Tests\Feature\UpdatePasswordTest
+  ✓ password can be updated                                              0.03s  
+  ✓ current password must be correct                                     0.02s  
+  ✓ new passwords must match                                             0.03s  
+
+  Tests:    7 skipped, 214 passed (775 assertions)
+  Duration: 9.31s
+
+Time: 00:09.265, Memory: 64.50 MB
+
+Amortizacao Service (Tests\Unit\Services\AmortizacaoService)
+ ✔ Primeiro calculo usa valor principal como saldo anterior
+ ✔ Mes seguinte usa saldo do historico anterior como base
+ ✔ Desconta parcelas pagas no mes de referencia
+ ✔ Soma multiplas parcelas pagas no mesmo mes
+ ✔ Ignora parcelas pendentes
+ ✔ Ignora parcelas pagas em outro mes
+ ✔ Ignora parcelas de outra divida
+ ✔ Assume taxa zero quando nao ha historico para o mes corrente
+ ✔ Persiste resultado em historico juros
+ ✔ Atualiza cache de saldo devedor atual na divida
+ ✔ Recalculo do mesmo mes e idempotente e nao duplica historico
+
+Api Token Permissions (Tests\Feature\ApiTokenPermissions)
+ ↩ Api token permissions can be updated
+
+Authentication (Tests\Feature\Authentication)
+ ✔ Login screen can be rendered
+ ✔ Users can authenticate using the login screen
+ ✔ Users can not authenticate with invalid password
+
+Avisos (Tests\Feature\Avisos)
+ ✔ Mensagem de status e entregue ao toast
+ ✔ Erro de validacao fica inline no formulario enviado
+
+Browser Sessions (Tests\Feature\BrowserSessions)
+ ✔ Other browser sessions can be logged out
+
+Cartao Credito Controller (Tests\Feature\CartaoCreditoController)
+ ✔ Usuario autenticado pode cadastrar cartao de credito
+ ✔ Dia fechamento fora do intervalo valido e rejeitado
+ ✔ Usuario nao autenticado nao pode cadastrar cartao
+
+Cenarios C1C4 (Tests\Unit\Services\CenariosC1C4)
+ ✔ Cenario with data set "C1"
+ ✔ Cenario with data set "C2"
+ ✔ Cenario with data set "C3"
+ ✔ Cenario with data set "C4"
+ ✔ C1 parcela pendente nao entra no pagamento do mes
+
+Create Api Token (Tests\Feature\CreateApiToken)
+ ↩ Api tokens can be created
+
+Dashboard Controller (Tests\Feature\DashboardController)
+ ✔ Saldo disponivel desconta faturas abertas e parcelas de dividas do mes
+ ✔ Usuario sem renda cadastrada nao gera erro
+ ✔ Evolucao do saldo devedor tem uma serie por divida
+ ✔ Evolucao do saldo devedor nao mistura dados de outro usuario
+
+Dashboard Painel (Tests\Feature\DashboardPainel)
+ ✔ Cartoes alertas e proximos vencimentos
+ ✔ Barra mostra excedente quando comprometido passa da renda
+ ✔ Sem renda mostra alerta com botao e sem dividas mostra estado vazio
+ ✔ Relatorio decompoe pagamento em juros e amortizacao
+
+Delete Account (Tests\Feature\DeleteAccount)
+ ✔ User accounts can be deleted
+ ✔ Correct password must be provided before account can be deleted
+
+Delete Api Token (Tests\Feature\DeleteApiToken)
+ ↩ Api tokens can be deleted
+
+Demo Seeder (Tests\Feature\DemoSeeder)
+ ✔ Demo seeder recria usuario limpo que consegue fazer login
+ ✔ Demo seeder nao apaga outros usuarios nem seus dados
+
+Divida Controller (Tests\Feature\DividaController)
+ ✔ Usuario autenticado pode cadastrar divida
+ ✔ Dono da divida pode ver o relatorio de amortizacao
+ ✔ Usuario nao pode ver relatorio de divida de outro usuario
+
+Editar Excluir (Tests\Feature\EditarExcluir)
+ ✔ Dono consegue with data set "editar dívida"
+ ✔ Dono consegue with data set "excluir dívida"
+ ✔ Dono consegue with data set "editar taxa"
+ ✔ Dono consegue with data set "excluir taxa"
+ ✔ Dono consegue with data set "editar parcela"
+ ✔ Dono consegue with data set "excluir parcela"
+ ✔ Dono consegue with data set "desfazer pagamento da parcela"
+ ✔ Dono consegue with data set "editar cartão"
+ ✔ Dono consegue with data set "excluir cartão"
+ ✔ Dono consegue with data set "editar fatura"
+ ✔ Dono consegue with data set "excluir fatura"
+ ✔ Dono consegue with data set "desfazer pagamento da fatura"
+ ✔ Outro usuario recebe 403 e nada muda with data set "editar dívida"
+ ✔ Outro usuario recebe 403 e nada muda with data set "excluir dívida"
+ ✔ Outro usuario recebe 403 e nada muda with data set "editar taxa"
+ ✔ Outro usuario recebe 403 e nada muda with data set "excluir taxa"
+ ✔ Outro usuario recebe 403 e nada muda with data set "editar parcela"
+ ✔ Outro usuario recebe 403 e nada muda with data set "excluir parcela"
+ ✔ Outro usuario recebe 403 e nada muda with data set "desfazer pagamento da parcela"
+ ✔ Outro usuario recebe 403 e nada muda with data set "editar cartão"
+ ✔ Outro usuario recebe 403 e nada muda with data set "excluir cartão"
+ ✔ Outro usuario recebe 403 e nada muda with data set "editar fatura"
+ ✔ Outro usuario recebe 403 e nada muda with data set "excluir fatura"
+ ✔ Outro usuario recebe 403 e nada muda with data set "desfazer pagamento da fatura"
+ ✔ Visitante vai para o login with data set "editar dívida"
+ ✔ Visitante vai para o login with data set "excluir dívida"
+ ✔ Visitante vai para o login with data set "editar taxa"
+ ✔ Visitante vai para o login with data set "excluir taxa"
+ ✔ Visitante vai para o login with data set "editar parcela"
+ ✔ Visitante vai para o login with data set "excluir parcela"
+ ✔ Visitante vai para o login with data set "desfazer pagamento da parcela"
+ ✔ Visitante vai para o login with data set "editar cartão"
+ ✔ Visitante vai para o login with data set "excluir cartão"
+ ✔ Visitante vai para o login with data set "editar fatura"
+ ✔ Visitante vai para o login with data set "excluir fatura"
+ ✔ Visitante vai para o login with data set "desfazer pagamento da fatura"
+ ✔ Filho de outro pai na url aninhada retorna 404 with data set "editar taxa"
+ ✔ Filho de outro pai na url aninhada retorna 404 with data set "excluir taxa"
+ ✔ Filho de outro pai na url aninhada retorna 404 with data set "editar parcela"
+ ✔ Filho de outro pai na url aninhada retorna 404 with data set "excluir parcela"
+ ✔ Filho de outro pai na url aninhada retorna 404 with data set "desfazer parcela"
+ ✔ Filho de outro pai na url aninhada retorna 404 with data set "editar fatura"
+ ✔ Filho de outro pai na url aninhada retorna 404 with data set "excluir fatura"
+ ✔ Filho de outro pai na url aninhada retorna 404 with data set "desfazer fatura"
+ ✔ Recurso correto de outro usuario retorna 403 with data set "editar taxa"
+ ✔ Recurso correto de outro usuario retorna 403 with data set "excluir taxa"
+ ✔ Recurso correto de outro usuario retorna 403 with data set "editar parcela"
+ ✔ Recurso correto de outro usuario retorna 403 with data set "excluir parcela"
+ ✔ Recurso correto de outro usuario retorna 403 with data set "desfazer parcela"
+ ✔ Recurso correto de outro usuario retorna 403 with data set "editar fatura"
+ ✔ Recurso correto de outro usuario retorna 403 with data set "excluir fatura"
+ ✔ Recurso correto de outro usuario retorna 403 with data set "desfazer fatura"
+ ✔ Excluir divida remove parcelas e historico
+ ✔ Excluir cartao remove faturas
+ ✔ Telas mostram botoes de editar excluir com confirmacao
+
+Email Case Insensitive (Tests\Feature\EmailCaseInsensitive)
+ ✔ Email e sempre salvo em minusculas
+ ✔ Usuario pode logar digitando email com case diferente do cadastro
+ ✔ Nao e possivel cadastrar dois usuarios com mesmo email em case diferente
+
+Email Verification (Tests\Feature\EmailVerification)
+ ↩ Email verification screen can be rendered
+ ↩ Email can be verified
+ ↩ Email can not verified with invalid hash
+
+Example (Tests\Feature\Example)
+ ✔ A raiz redireciona visitante para o login
+ ✔ A raiz redireciona usuario autenticado para o dashboard
+
+Example (Tests\Unit\Example)
+ ✔ That true is true
+
+Fatura Controller (Tests\Feature\FaturaController)
+ ✔ Dono do cartao pode cadastrar fatura
+ ✔ Usuario nao pode cadastrar fatura em cartao de outro usuario
+ ✔ Dono pode marcar fatura como paga
+ ✔ Usuario nao pode marcar fatura de outro usuario como paga
+
+Fluxo Completo C1 (Tests\Feature\FluxoCompletoC1)
+ ✔ Fluxo completo do c1 pela interface
+
+Historico Juros Controller (Tests\Feature\HistoricoJurosController)
+ ✔ Cadastrar taxa de juros dispara o recalculo do saldo devedor
+ ✔ Taxa percentual com virgula e gravada como fracao
+ ✔ Taxa acima de 100 por cento e rejeitada
+ ✔ Usuario nao pode lancar juros em divida de outro usuario
+
+Identidade Visual (Tests\Feature\IdentidadeVisual)
+ ✔ Tela de login nao exibe marca do template
+ ✔ Dashboard tem titulo e rodape do projeto
+
+Idioma EEmail (Tests\Feature\IdiomaEEmail)
+ ✔ Aplicacao esta em portugues e no fuso de sao paulo
+ ✔ Mensagem de validacao em portugues
+ ✔ Login invalido mostra mensagem em portugues
+ ✔ Pedido de redefinicao envia email ao usuario certo em portugues
+ ✔ Remetente configurado
+
+Integridade Banco (Tests\Feature\IntegridadeBanco)
+ ✔ Parcela com fatura e divida e recusada pelo banco
+ ✔ Parcela sem fatura e sem divida e recusada pelo banco
+ ✔ Parcela com exatamente um vinculo e aceita
+ ✔ Constraint existe no catalogo do postgresql
+
+Isolamento Entre Usuarios (Tests\Feature\IsolamentoEntreUsuarios)
+ ✔ C6 usuario b e negado nas rotas de a with data set "GET /dividas/{divida}"
+ ✔ C6 usuario b e negado nas rotas de a with data set "GET /dividas/{divida}/relatorio"
+ ✔ C6 usuario b e negado nas rotas de a with data set "POST /dividas/{divida}/juros"
+ ✔ C6 usuario b e negado nas rotas de a with data set "POST /dividas/{divida}/parcelas"
+ ✔ C6 usuario b e negado nas rotas de a with data set "PATCH /parcelas/{parcela}/pagar"
+ ✔ C6 usuario b e negado nas rotas de a with data set "PATCH /faturas/{fatura}/pagar"
+ ✔ C6 usuario b e negado nas rotas de a with data set "GET /cartoes/{cartao}"
+ ✔ C6 usuario b e negado nas rotas de a with data set "POST /faturas (cartão de A)"
+ ✔ C6 visitante e redirecionado ao login with data set "GET /dividas/{divida}"
+ ✔ C6 visitante e redirecionado ao login with data set "GET /dividas/{divida}/relatorio"
+ ✔ C6 visitante e redirecionado ao login with data set "POST /dividas/{divida}/juros"
+ ✔ C6 visitante e redirecionado ao login with data set "POST /dividas/{divida}/parcelas"
+ ✔ C6 visitante e redirecionado ao login with data set "PATCH /parcelas/{parcela}/pagar"
+ ✔ C6 visitante e redirecionado ao login with data set "PATCH /faturas/{fatura}/pagar"
+ ✔ C6 visitante e redirecionado ao login with data set "GET /cartoes/{cartao}"
+ ✔ C6 visitante e redirecionado ao login with data set "POST /faturas (cartão de A)"
+ ✔ C6 listagens de b nao contem registros de a
+ ✔ C6 dashboard de b nao inclui valores de a
+
+Mascaras (Tests\Feature\Mascaras)
+ ✔ Normalizador aceita formatos mascarados with data set "mascara completa"
+ ✔ Normalizador aceita formatos mascarados with data set "milhar e virgula"
+ ✔ Normalizador aceita formatos mascarados with data set "so virgula"
+ ✔ Normalizador aceita formatos mascarados with data set "ponto decimal"
+ ✔ Cadastro de divida aceita valor mascarado with data set "mascara completa"
+ ✔ Cadastro de divida aceita valor mascarado with data set "milhar e virgula"
+ ✔ Cadastro de divida aceita valor mascarado with data set "so virgula"
+ ✔ Cadastro de divida aceita valor mascarado with data set "ponto decimal"
+ ✔ Valores mascarados em cartao fatura e parcela
+ ✔ Valor invalido e recusado em portugues with data set "texto"
+ ✔ Valor invalido e recusado em portugues with data set "duas virgulas"
+ ✔ Valor invalido e recusado em portugues with data set "tres casas"
+ ✔ Valor invalido e recusado em portugues with data set "zero"
+ ✔ Valor invalido e recusado em portugues with data set "vazio"
+ ✔ Taxa mascarada e limitada a 100
+
+Parcela Controller (Tests\Feature\ParcelaController)
+ ✔ Marcar parcela de divida como paga dispara recalculo do saldo devedor
+ ✔ Marcar parcela de fatura como paga nao mexe no saldo devedor de divida
+ ✔ Usuario nao pode marcar parcela de divida de outro usuario como paga
+ ✔ Usuario nao pode marcar parcela de fatura de outro usuario como paga
+
+Password Confirmation (Tests\Feature\PasswordConfirmation)
+ ✔ Confirm password screen can be rendered
+ ✔ Password can be confirmed
+ ✔ Password is not confirmed with invalid password
+
+Password Reset (Tests\Feature\PasswordReset)
+ ✔ Reset password link screen can be rendered
+ ✔ Reset password link can be requested
+ ✔ Reset password screen can be rendered
+ ✔ Password can be reset with valid token
+
+Perfil Controller (Tests\Feature\PerfilController)
+ ✔ Usuario pode atualizar a propria renda mensal
+ ✔ Dashboard exibe formulario de renda mensal
+ ✔ Salvar renda com virgula atualiza e mostra mensagem
+ ✔ Renda com mais de duas casas e rejeitada
+ ✔ Renda mensal negativa e rejeitada
+
+Profile Information (Tests\Feature\ProfileInformation)
+ ✔ Current profile information is available
+ ✔ Profile information can be updated
+
+Recalculo Cascata (Tests\Feature\RecalculoCascata)
+ ✔ Editar pagamento do mes 1 recalcula os meses seguintes
+ ✔ Excluir taxa de mes com pagamento vira zero e recalcula
+ ✔ Desfazer pagamento do mes 3
+ ✔ Editar taxa do mes 1 recalcula os meses seguintes
+ ✔ Excluir parcela paga recalcula
+ ✔ Excluir taxa de mes sem pagamento remove o registro
+ ✔ Editar valor principal recalcula todos os meses
+ ✔ Registro de zero por cento criado ao pagar permanece apos desfazer
+ ✔ Mes sem taxa nao gera juros e nao e criado pela cascata
+ ✔ Falha no recalculo desfaz a edicao
+ ✔ Falha no recalculo desfaz a exclusao da taxa
+
+Registration (Tests\Feature\Registration)
+ ✔ Registration screen can be rendered
+ ↩ Registration screen cannot be rendered if support is disabled
+ ✔ New users can register
+
+Renda Livre Real (Tests\Feature\RendaLivreReal)
+ ✔ C5 renda livre real
+ ✔ C5 caso de borda nao altera o resultado with data set "a"
+ ✔ C5 caso de borda nao altera o resultado with data set "b"
+ ✔ C5 caso de borda nao altera o resultado with data set "c"
+ ✔ C5 caso de borda nao altera o resultado with data set "d"
+ ✔ C5 todos os casos de borda juntos
+ ✔ Parcela vencida de mes anterior gera alerta sem alterar a formula
+ ✔ Sem parcelas vencidas nao ha alerta
+ ✔ Renda livre real pode ficar negativa
+
+Situacao (Tests\Unit\Models\Situacao)
+ ✔ Situacao da parcela with data set "venceu ontem"
+ ✔ Situacao da parcela with data set "vence hoje (limite)"
+ ✔ Situacao da parcela with data set "vence amanha"
+ ✔ Situacao da parcela with data set "paga e atrasada"
+ ✔ Parcela usa o fuso de sao paulo
+ ✔ Situacao da fatura with data set "antes do fechamento"
+ ✔ Situacao da fatura with data set "no dia do fechamento"
+ ✔ Situacao da fatura with data set "depois do fechamento"
+ ✔ Situacao da fatura with data set "no dia do vencimento (limite)"
+ ✔ Situacao da fatura with data set "depois do vencimento"
+ ✔ Fatura paga e sempre paga
+ ✔ Fechamento maior que vencimento fecha no mes anterior
+ ✔ Dia 31 em mes de 30 dias vira ultimo dia
+ ✔ Vencimento dia 31 em fevereiro
+
+Two Factor Authentication Settings (Tests\Feature\TwoFactorAuthenticationSettings)
+ ✔ Two factor authentication can be enabled
+ ✔ Recovery codes can be regenerated
+ ✔ Two factor authentication can be disabled
+
+Update Password (Tests\Feature\UpdatePassword)
+ ✔ Password can be updated
+ ✔ Current password must be correct
+ ✔ New passwords must match
+
+OK, but some tests were skipped!
+Tests: 221, Assertions: 775, Skipped: 7.

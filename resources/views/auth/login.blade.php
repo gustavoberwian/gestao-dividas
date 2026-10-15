@@ -12,7 +12,6 @@
 
 @section('content')
   <x-auth-card title="Bem-vindo(a)! 👋" subtitle="Entre na sua conta para continuar">
-    @include('partials.alert-status')
 
     <form method="POST" action="{{ route('login') }}">
       @csrf
@@ -40,7 +39,7 @@
     </form>
 
     <p class="text-center">
-      <span>Ainda nao tem uma conta?</span>
+      <span>Ainda não tem uma conta?</span>
       <a href="{{ route('register') }}">
         <span>Criar conta</span>
       </a>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\NumeroBr;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -9,8 +10,10 @@ class PerfilController extends Controller
 {
     public function atualizarRenda(Request $request): RedirectResponse
     {
+        NumeroBr::normalizarCampos($request, ['renda_mensal']);
+
         $validated = $request->validate([
-            'renda_mensal' => ['required', 'numeric', 'min:0'],
+            'renda_mensal' => ['required', 'numeric', 'min:0', 'max:9999999999.99', 'decimal:0,2'],
         ]);
 
         $request->user()->update([

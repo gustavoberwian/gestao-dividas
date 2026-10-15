@@ -267,7 +267,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let templateCustomizerResetBtn = document.querySelector('.template-customizer-reset-btn');
     if (templateCustomizerResetBtn) {
       templateCustomizerResetBtn.onclick = function () {
-        window.location.href = baseUrl + 'lang/en';
+        window.location.reload();
       };
     }
   }, 1500);

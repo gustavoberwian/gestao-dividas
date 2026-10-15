@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\language\LanguageController;
 use App\Http\Controllers\pages\Page2;
 use App\Http\Controllers\pages\MiscError;
 use App\Http\Controllers\authentications\LoginBasic;
@@ -23,8 +22,6 @@ Route::get('/', function () {
 
 Route::get('/page-2', [Page2::class, 'index'])->name('pages-page-2');
 
-// locale
-Route::get('/lang/{locale}', [LanguageController::class, 'swap']);
 Route::get('/pages/misc-error', [MiscError::class, 'index'])->name('pages-misc-error');
 
 // authentication (demos estaticas do starter-kit, nao usar - login/registro reais ficam em /login e /register)
@@ -43,12 +40,30 @@ Route::middleware([
     Route::get('/cartoes', [CartaoCreditoController::class, 'index'])->name('cartoes.index');
     Route::get('/cartoes/{cartao}', [CartaoCreditoController::class, 'show'])->name('cartoes.show');
     Route::post('/cartoes', [CartaoCreditoController::class, 'store'])->name('cartoes.store');
+    Route::put('/cartoes/{cartao}', [CartaoCreditoController::class, 'update'])->name('cartoes.update');
+    Route::delete('/cartoes/{cartao}', [CartaoCreditoController::class, 'destroy'])->name('cartoes.destroy');
 
     Route::get('/dividas', [DividaController::class, 'index'])->name('dividas.index');
     Route::post('/dividas', [DividaController::class, 'store'])->name('dividas.store');
     Route::get('/dividas/{divida}/relatorio', [DividaController::class, 'relatorioAmortizacao'])->name('dividas.relatorio');
     Route::post('/dividas/{divida}/juros', [HistoricoJurosController::class, 'store'])->name('dividas.juros.store');
     Route::post('/dividas/{divida}/parcelas', [ParcelaController::class, 'store'])->name('dividas.parcelas.store');
+    Route::put('/dividas/{divida}', [DividaController::class, 'update'])->name('dividas.update');
+    Route::delete('/dividas/{divida}', [DividaController::class, 'destroy'])->name('dividas.destroy');
+
+    // Bloco G: rotas aninhadas com scoped binding -> filho de outro pai responde 404
+    Route::scopeBindings()->group(function () {
+        Route::put('/dividas/{divida}/juros/{historico}', [HistoricoJurosController::class, 'update'])->name('dividas.juros.update');
+        Route::delete('/dividas/{divida}/juros/{historico}', [HistoricoJurosController::class, 'destroy'])->name('dividas.juros.destroy');
+
+        Route::put('/dividas/{divida}/parcelas/{parcela}', [ParcelaController::class, 'update'])->name('dividas.parcelas.update');
+        Route::delete('/dividas/{divida}/parcelas/{parcela}', [ParcelaController::class, 'destroy'])->name('dividas.parcelas.destroy');
+        Route::patch('/dividas/{divida}/parcelas/{parcela}/reabrir', [ParcelaController::class, 'reabrir'])->name('dividas.parcelas.reabrir');
+
+        Route::put('/cartoes/{cartao}/faturas/{fatura}', [FaturaController::class, 'update'])->name('cartoes.faturas.update');
+        Route::delete('/cartoes/{cartao}/faturas/{fatura}', [FaturaController::class, 'destroy'])->name('cartoes.faturas.destroy');
+        Route::patch('/cartoes/{cartao}/faturas/{fatura}/reabrir', [FaturaController::class, 'reabrir'])->name('cartoes.faturas.reabrir');
+    });
 
     Route::patch('/parcelas/{parcela}/pagar', [ParcelaController::class, 'marcarPaga'])->name('parcelas.pagar');
 

@@ -69,6 +69,9 @@ class DashboardControllerTest extends TestCase
         $response->assertOk();
         // 5000 (renda) - 300 (fatura aberta) - 200 (parcela pendente do mes) = 4500
         $response->assertSee('4.500,00');
+        // A2: termo padronizado com o artigo e o questionario
+        $response->assertSee('Renda Livre Real');
+        $response->assertDontSee('Saldo disponivel');
     }
 
     public function test_usuario_sem_renda_cadastrada_nao_gera_erro(): void
@@ -80,7 +83,8 @@ class DashboardControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_evolucao_do_saldo_devedor_soma_todas_as_dividas_do_usuario_por_mes(): void
+    // Bloco J: uma serie por divida, com ponto inicial no valor principal e um ponto por mes
+    public function test_evolucao_do_saldo_devedor_tem_uma_serie_por_divida(): void
     {
         $user = User::factory()->create();
 
@@ -93,18 +97,24 @@ class DashboardControllerTest extends TestCase
             'data_inicio' => '2026-01-01', 'saldo_devedor_atual' => 500,
         ]);
 
-        $divida1->historicoJuros()->create(['mes_referencia' => '2026-01-01', 'taxa_juros' => 0, 'saldo_devedor_calculado' => 1000]);
+        $divida1->historicoJuros()->create(['mes_referencia' => '2026-01-01', 'taxa_juros' => 0.015, 'saldo_devedor_calculado' => 1000]);
         $divida2->historicoJuros()->create(['mes_referencia' => '2026-01-01', 'taxa_juros' => 0, 'saldo_devedor_calculado' => 500]);
         $divida1->historicoJuros()->create(['mes_referencia' => '2026-02-01', 'taxa_juros' => 0, 'saldo_devedor_calculado' => 800]);
+        $divida1->parcelas()->create(['numero_parcela' => 1, 'valor' => 200, 'data_vencimento' => '2026-02-10', 'status_pagamento' => 'paga']);
 
         $response = $this->actingAs($user)->get('/dashboard');
 
         $response->assertOk();
-        $response->assertViewHas('evolucaoSaldoDevedorLabels', function ($labels) {
-            return $labels->values()->all() === ['01/2026', '02/2026'];
-        });
-        $response->assertViewHas('evolucaoSaldoDevedorValores', function ($valores) {
-            return $valores->values()->all() === [1500.0, 800.0];
+        $response->assertViewHas('seriesSaldoDevedor', function ($series) use ($divida1) {
+            $serie1 = $series->firstWhere('id', $divida1->id);
+
+            return $series->count() === 2
+                && $serie1['name'] === 'Divida 1'
+                && $serie1['data']->pluck('y')->all() === [1000.0, 1000.0, 800.0]
+                && $serie1['data']->pluck('x')->all() === ['2026-01-01', '2026-01-31', '2026-02-28']
+                && $serie1['data'][0]['inicial'] === true
+                && $serie1['data'][1]['taxa'] === 1.5
+                && $serie1['data'][2]['pago'] === 200.0;
         });
     }
 
@@ -122,8 +132,7 @@ class DashboardControllerTest extends TestCase
         $response = $this->actingAs($user)->get('/dashboard');
 
         $response->assertOk();
-        $response->assertViewHas('evolucaoSaldoDevedorValores', function ($valores) {
-            return $valores->isEmpty();
-        });
+        $response->assertViewHas('seriesSaldoDevedor', fn ($series) => $series->isEmpty());
+        $response->assertDontSee('Divida de outro usuario');
     }
 }

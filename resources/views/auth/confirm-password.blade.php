@@ -11,8 +11,7 @@
 @endsection
 
 @section('content')
-  <x-auth-card title="Area segura 🔐" subtitle="Confirme sua senha antes de continuar">
-    @include('partials.alert-status')
+  <x-auth-card title="Área segura 🔐" subtitle="Confirme sua senha antes de continuar">
 
     <form method="POST" action="{{ route('password.confirm') }}">
       @csrf

@@ -12,7 +12,6 @@
 
 @section('content')
   <x-auth-card title="Nova senha 🔑" subtitle="Escolha uma nova senha para sua conta">
-    @include('partials.alert-status')
 
     <form method="POST" action="{{ route('password.update') }}">
       @csrf

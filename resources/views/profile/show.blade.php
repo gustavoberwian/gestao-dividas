@@ -3,7 +3,6 @@
 @section('title', 'Meu Perfil')
 
 @section('content')
-  @include('partials.alert-status')
 
   <h4 class="mb-4">Meu Perfil</h4>
 

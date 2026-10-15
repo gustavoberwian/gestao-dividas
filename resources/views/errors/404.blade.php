@@ -4,7 +4,7 @@
 
 @extends('layouts/layoutMaster')
 
-@section('title', 'Pagina Nao Encontrada')
+@section('title', 'Página Não Encontrada')
 
 @section('page-style')
   @vite(['resources/assets/vendor/scss/pages/page-misc.scss'])
@@ -13,7 +13,7 @@
 @section('content')
   <x-error-page
     code="404"
-    title="Pagina nao encontrada ⚠️"
-    message="Nao conseguimos encontrar a pagina que voce esta procurando."
+    title="Página não encontrada ⚠️"
+    message="Não conseguimos encontrar a página que você está procurando."
   />
 @endsection

@@ -1,13 +1,13 @@
 <div class="card">
   <div class="card-header">
-    <h5 class="mb-1">Sessoes do Navegador</h5>
-    <p class="text-body-secondary mb-0">Gerencie e encerre suas sessoes ativas em outros navegadores e dispositivos.</p>
+    <h5 class="mb-1">Sessões do Navegador</h5>
+    <p class="text-body-secondary mb-0">Gerencie e encerre suas sessões ativas em outros navegadores e dispositivos.</p>
   </div>
   <div class="card-body">
     <p class="text-body-secondary">
-      Se necessario, voce pode encerrar todas as suas outras sessoes de navegador em todos os
-      dispositivos. Algumas das suas sessoes recentes estao listadas abaixo; esta lista pode nao ser
-      completa. Se voce acha que sua conta foi comprometida, tambem deveria atualizar sua senha.
+      Se necessário, você pode encerrar todas as suas outras sessões de navegador em todos os
+      dispositivos. Algumas das suas sessões recentes estão listadas abaixo; esta lista pode não ser
+      completa. Se você acha que sua conta foi comprometida, também deveria atualizar sua senha.
     </p>
 
     @if (count($this->sessions) > 0)
@@ -44,7 +44,7 @@
 
     <div class="d-flex align-items-center">
       <button type="button" class="btn btn-primary" wire:click="confirmLogout" wire:loading.attr="disabled">
-        Encerrar outras sessoes
+        Encerrar outras sessões
       </button>
 
       <x-saved-message on="loggedOut">Feito.</x-saved-message>
@@ -52,11 +52,11 @@
 
     <x-dialog-modal wire:model.live="confirmingLogout">
       <x-slot name="title">
-        Encerrar outras sessoes do navegador
+        Encerrar outras sessões do navegador
       </x-slot>
 
       <x-slot name="content">
-        Digite sua senha para confirmar que deseja encerrar suas outras sessoes de navegador em
+        Digite sua senha para confirmar que deseja encerrar suas outras sessões de navegador em
         todos os dispositivos.
 
         <div class="mt-4" x-data="{}" x-on:confirming-logout-other-browser-sessions.window="setTimeout(() => $refs.password.focus(), 250)">
@@ -81,7 +81,7 @@
         </button>
 
         <button type="button" class="btn btn-primary ms-2" wire:click="logoutOtherBrowserSessions" wire:loading.attr="disabled">
-          Encerrar outras sessoes
+          Encerrar outras sessões
         </button>
       </x-slot>
     </x-dialog-modal>

@@ -14,6 +14,6 @@
   <x-error-page
     code="500"
     title="Ops, algo deu errado 🛠️"
-    message="Ocorreu um erro interno. Ja fomos notificados e estamos verificando."
+    message="Ocorreu um erro interno. Já fomos notificados e estamos verificando."
   />
 @endsection

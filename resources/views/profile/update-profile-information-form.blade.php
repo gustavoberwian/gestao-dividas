@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-header">
-    <h5 class="mb-1">Informacoes do Perfil</h5>
+    <h5 class="mb-1">Informações do Perfil</h5>
     <p class="text-body-secondary mb-0">Atualize seu nome e e-mail de acesso.</p>
   </div>
   <div class="card-body">
@@ -75,15 +75,15 @@
 
         @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::emailVerification()) && ! $this->user->hasVerifiedEmail())
           <p class="text-body-secondary mt-2 mb-0">
-            Seu e-mail ainda nao foi verificado.
+            Seu e-mail ainda não foi verificado.
             <button type="button" class="btn btn-link p-0" wire:click.prevent="sendEmailVerification">
-              Clique aqui para reenviar o e-mail de verificacao.
+              Clique aqui para reenviar o e-mail de verificação.
             </button>
           </p>
 
           @if ($this->verificationLinkSent)
             <p class="text-success mt-2 mb-0">
-              Um novo link de verificacao foi enviado para o seu e-mail.
+              Um novo link de verificação foi enviado para o seu e-mail.
             </p>
           @endif
         @endif

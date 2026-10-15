@@ -15,6 +15,11 @@
 @vite(['resources/assets/js/main.js'])
 <!-- END: Theme JS-->
 
+<!-- BEGIN: Avisos (toasts), mascaras e confirmacoes compartilhadas -->
+@include('partials.toasts')
+@vite(['resources/assets/js/ui.js'])
+<!-- END: Avisos -->
+
 <!-- Pricing Modal JS-->
 @stack('pricing-script')
 <!-- END: Pricing Modal JS-->

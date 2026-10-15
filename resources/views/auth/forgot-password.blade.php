@@ -13,9 +13,8 @@
 @section('content')
   <x-auth-card
     title="Esqueceu a senha? 🔒"
-    subtitle="Informe seu e-mail e enviaremos um link para voce cadastrar uma nova senha"
+    subtitle="Informe seu e-mail e enviaremos um link para você cadastrar uma nova senha"
   >
-    @include('partials.alert-status')
 
     <form method="POST" action="{{ route('password.email') }}">
       @csrf
@@ -23,7 +22,7 @@
       <x-auth-input type="email" name="email" label="E-mail" :value="old('email')" required autofocus />
 
       <div class="mb-6">
-        <button class="btn btn-primary d-grid w-100" type="submit">Enviar link de redefinicao</button>
+        <button class="btn btn-primary d-grid w-100" type="submit">Enviar link de redefinição</button>
       </div>
     </form>
 

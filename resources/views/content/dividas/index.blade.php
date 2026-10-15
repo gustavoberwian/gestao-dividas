@@ -1,14 +1,13 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Minhas Dividas')
+@section('title', 'Minhas Dívidas')
 
 @section('content')
-  @include('partials.alert-status')
 
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 class="mb-0">Minhas Dividas</h4>
+    <h4 class="mb-0">Minhas Dívidas</h4>
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNovaDivida">
-      <i class="icon-base ti tabler-plus me-1"></i> Nova Divida
+      <i class="icon-base ti tabler-plus me-1"></i> Nova Dívida
     </button>
   </div>
 
@@ -17,11 +16,12 @@
       <table class="table">
         <thead>
           <tr>
-            <th>Descricao</th>
+            <th>Descrição</th>
             <th>Credor</th>
             <th>Valor principal</th>
             <th>Saldo devedor atual</th>
-            <th>Data de inicio</th>
+            <th>Data de início</th>
+            <th>Parcelas vencidas</th>
             <th></th>
           </tr>
         </thead>
@@ -34,15 +34,27 @@
               <td>R$ {{ number_format($divida->saldo_devedor_atual, 2, ',', '.') }}</td>
               <td>{{ $divida->data_inicio->format('d/m/Y') }}</td>
               <td>
+                @if ($divida->parcelas_vencidas_count > 0)
+                  <span class="badge bg-label-danger">{{ $divida->parcelas_vencidas_count }} {{ $divida->parcelas_vencidas_count === 1 ? 'vencida' : 'vencidas' }}</span>
+                @else
+                  <span class="text-body-secondary">—</span>
+                @endif
+              </td>
+              <td>
                 <a href="{{ route('dividas.relatorio', $divida) }}" class="btn btn-sm btn-outline-primary">
-                  Ver relatorio
+                  Ver relatório
                 </a>
+                <x-acao :action="route('dividas.destroy', $divida)" method="DELETE" class="btn-icon btn-text-danger"
+                  titulo="Excluir dívida"
+                  confirmar="Esta ação não pode ser desfeita. A dívida será excluída junto com todas as suas parcelas e o histórico de juros.">
+                  <i class="icon-base ti tabler-trash"></i>
+                </x-acao>
               </td>
             </tr>
           @empty
             <tr>
-              <td colspan="6" class="text-center text-body-secondary">
-                Nenhuma divida cadastrada ainda.
+              <td colspan="7" class="text-center text-body-secondary">
+                Nenhuma dívida cadastrada ainda.
               </td>
             </tr>
           @endforelse
@@ -51,39 +63,10 @@
     </div>
   </div>
 
-  <div class="modal fade" id="modalNovaDivida" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form action="{{ route('dividas.store') }}" method="POST">
-          @csrf
-          <div class="modal-header">
-            <h5 class="modal-title">Nova Divida</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mb-3">
-              <label class="form-label" for="descricao">Descricao</label>
-              <input type="text" id="descricao" name="descricao" class="form-control" value="{{ old('descricao') }}" required>
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="credor">Credor</label>
-              <input type="text" id="credor" name="credor" class="form-control" value="{{ old('credor') }}" required>
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="valor_principal">Valor principal</label>
-              <input type="number" step="0.01" min="0.01" id="valor_principal" name="valor_principal" class="form-control" value="{{ old('valor_principal') }}" required>
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="data_inicio">Data de inicio</label>
-              <input type="date" id="data_inicio" name="data_inicio" class="form-control" value="{{ old('data_inicio') }}" required>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-primary">Salvar</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+  <x-modal-form id="modalNovaDivida" title="Nova dívida" :action="route('dividas.store')">
+    <x-campo form="modalNovaDivida" name="descricao" label="Descrição" placeholder="Ex.: Empréstimo pessoal" />
+    <x-campo form="modalNovaDivida" name="credor" label="Credor" placeholder="Ex.: Banco X" />
+    <x-campo form="modalNovaDivida" name="valor_principal" label="Valor principal" mascara="moeda" placeholder="R$ 0,00" />
+    <x-campo form="modalNovaDivida" name="data_inicio" label="Data de início" mascara="data" placeholder="dd/mm/aaaa" />
+  </x-modal-form>
 @endsection

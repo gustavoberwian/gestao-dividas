@@ -8,13 +8,13 @@
     },
     {
       "url": "/dividas",
-      "name": "Minhas Dividas",
+      "name": "Minhas Dívidas",
       "icon": "menu-icon icon-base ti tabler-report-money",
       "slug": "dividas.index"
     },
     {
       "url": "/cartoes",
-      "name": "Cartoes de Credito",
+      "name": "Cartões de Crédito",
       "icon": "menu-icon icon-base ti tabler-credit-card",
       "slug": "cartoes.index"
     }

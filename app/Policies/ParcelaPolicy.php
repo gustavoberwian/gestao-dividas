@@ -15,4 +15,9 @@ class ParcelaPolicy
 
         return $user->id === $parcela->fatura->cartaoCredito->user_id;
     }
+
+    public function delete(User $user, Parcela $parcela): bool
+    {
+        return $this->update($user, $parcela);
+    }
 }

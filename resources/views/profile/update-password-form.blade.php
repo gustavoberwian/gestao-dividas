@@ -1,7 +1,7 @@
 <div class="card">
   <div class="card-header">
     <h5 class="mb-1">Atualizar Senha</h5>
-    <p class="text-body-secondary mb-0">Use uma senha longa e aleatoria para manter sua conta segura.</p>
+    <p class="text-body-secondary mb-0">Use uma senha longa e aleatória para manter sua conta segura.</p>
   </div>
   <div class="card-body">
     <form wire:submit="updatePassword">

@@ -45,4 +45,13 @@ class Divida extends Model
     {
         return $this->hasMany(HistoricoJuros::class);
     }
+
+    /**
+     * Alias usado pelo scoped binding das rotas /dividas/{divida}/juros/{historico}:
+     * o Laravel procura a relacao pelo plural do parametro ("historicos").
+     */
+    public function historicos(): HasMany
+    {
+        return $this->historicoJuros();
+    }
 }

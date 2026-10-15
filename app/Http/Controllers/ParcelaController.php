@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Divida;
 use App\Models\Parcela;
 use App\Services\AmortizacaoService;
+use App\Support\NumeroBr;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ParcelaController extends Controller
 {
@@ -18,11 +20,7 @@ class ParcelaController extends Controller
     {
         $this->authorize('view', $divida);
 
-        $validated = $request->validate([
-            'numero_parcela' => ['required', 'integer', 'min:1'],
-            'valor' => ['required', 'numeric', 'min:0.01'],
-            'data_vencimento' => ['required', 'date'],
-        ]);
+        $validated = $request->validate($this->regras($request));
 
         $divida->parcelas()->create([
             ...$validated,
@@ -36,13 +34,75 @@ class ParcelaController extends Controller
     {
         $this->authorize('update', $parcela);
 
-        $parcela->update(['status_pagamento' => 'paga']);
+        DB::transaction(function () use ($parcela, $amortizacaoService) {
+            $parcela->update(['status_pagamento' => 'paga']);
 
-        // RF007: parcela de divida marcada como paga dispara o recalculo do saldo devedor
-        if ($parcela->divida_id !== null) {
-            $amortizacaoService->calcularSaldoDevedor($parcela->divida, $parcela->data_vencimento);
-        }
+            // RF007: parcela de divida marcada como paga dispara o recalculo do saldo devedor
+            if ($parcela->divida_id !== null) {
+                $amortizacaoService->recalcularAPartirDe($parcela->divida, $parcela->data_vencimento);
+            }
+        });
 
         return redirect()->back()->with('status', 'Parcela marcada como paga.');
+    }
+
+    public function update(Request $request, Divida $divida, Parcela $parcela, AmortizacaoService $amortizacaoService): RedirectResponse
+    {
+        $this->authorize('update', $parcela);
+
+        $validated = $request->validate($this->regras($request));
+
+        DB::transaction(function () use ($divida, $parcela, $validated, $amortizacaoService) {
+            $vencimentoAnterior = $parcela->data_vencimento->copy();
+            $parcela->update($validated);
+
+            // so parcelas pagas entram na formula; recalcula a partir do mes mais antigo
+            if ($parcela->status_pagamento === 'paga') {
+                $amortizacaoService->recalcularAPartirDe($divida, $vencimentoAnterior->min($parcela->data_vencimento));
+            }
+        });
+
+        return redirect()->back()->with('status', 'Parcela atualizada.');
+    }
+
+    public function destroy(Divida $divida, Parcela $parcela, AmortizacaoService $amortizacaoService): RedirectResponse
+    {
+        $this->authorize('delete', $parcela);
+
+        DB::transaction(function () use ($divida, $parcela, $amortizacaoService) {
+            $estavaPaga = $parcela->status_pagamento === 'paga';
+            $vencimento = $parcela->data_vencimento->copy();
+            $parcela->delete();
+
+            if ($estavaPaga) {
+                $amortizacaoService->recalcularAPartirDe($divida, $vencimento);
+            }
+        });
+
+        return redirect()->back()->with('status', 'Parcela excluída.');
+    }
+
+    /** Desfaz o pagamento. O registro de juros do mes (mesmo o de 0% criado ao pagar) e mantido. */
+    public function reabrir(Divida $divida, Parcela $parcela, AmortizacaoService $amortizacaoService): RedirectResponse
+    {
+        $this->authorize('update', $parcela);
+
+        DB::transaction(function () use ($divida, $parcela, $amortizacaoService) {
+            $parcela->update(['status_pagamento' => 'pendente']);
+            $amortizacaoService->recalcularAPartirDe($divida, $parcela->data_vencimento);
+        });
+
+        return redirect()->back()->with('status', 'Pagamento desfeito e saldos recalculados.');
+    }
+
+    private function regras(Request $request): array
+    {
+        NumeroBr::normalizarCampos($request, ['valor']);
+
+        return [
+            'numero_parcela' => ['required', 'integer', 'min:1', 'max:32767'],
+            'valor' => ['required', 'numeric', 'min:0.01', 'max:9999999999.99', 'decimal:0,2'],
+            'data_vencimento' => ['required', 'date'],
+        ];
     }
 }

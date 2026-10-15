@@ -11,4 +11,14 @@ class FaturaPolicy
     {
         return $user->id === $fatura->cartaoCredito->user_id;
     }
+
+    public function update(User $user, Fatura $fatura): bool
+    {
+        return $this->view($user, $fatura);
+    }
+
+    public function delete(User $user, Fatura $fatura): bool
+    {
+        return $this->view($user, $fatura);
+    }
 }

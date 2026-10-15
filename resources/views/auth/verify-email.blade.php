@@ -13,20 +13,20 @@
 @section('content')
   <x-auth-card title="Verifique seu e-mail ✉️">
     <p class="mb-6">
-      Antes de continuar, verifique seu endereco de e-mail clicando no link que enviamos.
-      Se voce nao recebeu o e-mail, podemos enviar outro.
+      Antes de continuar, verifique seu endereço de e-mail clicando no link que enviamos.
+      Se você não recebeu o e-mail, podemos enviar outro.
     </p>
 
     @if (session('status') == 'verification-link-sent')
       <div class="alert alert-success">
-        Um novo link de verificacao foi enviado para o e-mail cadastrado no seu perfil.
+        Um novo link de verificação foi enviado para o e-mail cadastrado no seu perfil.
       </div>
     @endif
 
     <div class="d-flex justify-content-between align-items-center">
       <form method="POST" action="{{ route('verification.send') }}">
         @csrf
-        <button type="submit" class="btn btn-primary">Reenviar e-mail de verificacao</button>
+        <button type="submit" class="btn btn-primary">Reenviar e-mail de verificação</button>
       </form>
 
       <div>
